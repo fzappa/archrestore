@@ -2,7 +2,7 @@
 #
 # Arch Linux Restore Script
 # Alan Franco
-# github.com/fzappa
+# github.com/fzappa/archrestore
 #
 
 USER="user"
