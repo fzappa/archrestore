@@ -19,7 +19,7 @@ LANG1="pt_BR.UTF-8 UTF-8"
 LANG2="pt_BR.UTF-8"
 HOST1="orion"
 
-EDITED="YES" # YES | NO
+EDITED="NO" # YES | NO
 
 
 
