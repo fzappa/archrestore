@@ -127,14 +127,14 @@ if [ $EDITED == "YES" ]; then
 
 
   helpFunction(){
-    echo -e "\n\n\t\t################################################"
-    echo -e "\t\t#           ${YELLOWB}Arch Linux Restore Script${NC}          #"
-    echo -e "\t\t# ${WHITE}$0${NC}                             #"
-    echo -e "\t\t# ${BLUE}is a shell script to configure Arch Linux ${NC}   #"
-    echo -e "\t\t# ${RED}Author: Alan Franco  -  github.com/fzappa ${NC}   #"
-    echo -e "\t\t# ${YELLOW}Date: 05/26/2019${NC}                             #"
-    echo -e "\t\t################################################"
-    echo -e "\n\tUsage: ${WHITE}$0${NC} ${YELLOW}<option>${NC}\n"
+    echo -e "\t#################################################################"
+    echo -e "\t#\t\t\t${YELLOWB}Arch Linux Restore Script${NC}\t\t#"
+    echo -e "\t# ${WHITE}$0${NC}\t\t\t\t\t\t#"
+    echo -e "\t# ${BLUE}is a shell script to configure Arch Linux ${NC}\t\t\t#"
+    echo -e "\t# ${RED}Author: Alan Franco  -  github.com/fzappa/archrestore ${NC}\t#"
+    echo -e "\t# ${YELLOW}Date: 05/26/2019${NC}\t\t\t\t\t\t#"
+    echo -e "\t#################################################################\n"
+    echo -e "\tUsage: ${WHITE}$0${NC} ${YELLOW}<option>${NC}\n"
     echo -e "\t${YELLOW}-b ${NC} | ${YELLOW}--backup${NC}\t\t: ${RED}Generate backup list of Arch and Aur packages${NC}"
     echo -e "\t${YELLOW}-ba${NC} | ${YELLOW}--backuparch${NC}\t: ${RED}Generate backup list of Arch packages${NC}"
     echo -e "\t${YELLOW}-bu${NC} | ${YELLOW}--backupaur${NC}\t: ${RED}Generate backup list of Aur packages${NC}"
@@ -159,29 +159,53 @@ if [ $EDITED == "YES" ]; then
     echo -e "\t${YELLOW}      --confMirrorBr${NC}\t: ${RED}Live fastest mirrors config${NC}"
     echo -e "\n\n"
     echo -e "\t\t\t${REDB}!!!   WARNING   !!!${NC}"
-    echo -e "\t\t   ${YELLOW}You ${NC}${RED}MUST${NC}${YELLOW} read and edit the script${NC}"
-    echo -e "\t\t   ${YELLOW}for your own convenience${NC}\n\n"
+    echo -e "\t\t${YELLOW}You ${NC}${RED}MUST${NC}${YELLOW} read and edit the script${NC}"
+    echo -e "\t\t${YELLOW}for your own convenience${NC}\n\n"
 
     exit 0
   }
 
+  ###### BEGIN SCRIPT TEST FUNCTIONS ######
 
   sudotest(){
     if !(hash sudo 2>/dev/null); then
       echo -e "${RED}SUDO not installed.${NC}"
-      if [[ $(/usr/bin/id -u) -ne 0 ]]; then # if not root
+      if [[ $(/usr/bin/id -u) -ne 0 ]]; then
         echo -e "${YELLOW}Please, login as root and install sudo${NC}"
         exit 1
       else
         echo -e "${YELLOW}Install sudo${NC}"
         pacman -Sy
-        pacman -S sudo
+        pacman -S --needed sudo
       fi
     else
       echo -e "${YELLOW}SUDO already installed.${NC}"
     fi
   }
 
+  notroottest(){
+    if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+      echo -e "${GREENB}Runing as user${NC}"
+    else
+      echo -e "${YELLOWB}This must be run as user${NC}"
+      exit 1
+    fi
+  }
+
+  roottest(){
+    if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+      echo -e "${REDB}This must be run as root${NC}"
+      exit 1
+    else
+      echo -e "${REDB}Runing as root${NC}"
+    fi
+  }
+
+  ###### END SCRIPT TEST FUNCTIONS ######
+
+
+
+  ###### BEGIN SCRIPT FUNCTIONS ######
 
   backupArch(){ # --backuparch
     echo -e "${YELLOW}Backup Arch packages to $ARCHPKG ${NC}"
@@ -212,8 +236,9 @@ if [ $EDITED == "YES" ]; then
 
   restoreAur(){ # --restoreaur
     if [ -f "$AURPKG" ]; then
-      installYay
       echo -e "${YELLOW}Restore AUR packages from $AURPKG...${NC}"
+      notroottest
+      installYay
       yay -S --needed --noconfirm - < $AURPKG
       echo -e "${YELLOW}Reinstalled all Aur packages.\n${NC}"
     else
@@ -226,41 +251,37 @@ if [ $EDITED == "YES" ]; then
 
 
   installYay(){ # --installYay
-    if [[ $(/usr/bin/id -u) -ne 0 ]]; then # if not root
-      echo -e "${YELLOW}Install YAY... ${NC}"
-      echo -e "${YELLOW}Checking Yay dependencies... ${NC}"
-      sudotest
+    echo -e "${YELLOW}Install YAY... ${NC}"
+    notroottest
+    echo -e "${YELLOW}Checking Yay dependencies... ${NC}"
+    sudotest
 
-      if !(hash git 2>/dev/null ); then
-        echo -e "${RED}GIT not installed. ${NC}"
-        echo -e "${YELLOW}Install git ${NC}"
-        sudo pacman -S git
-      else
-        echo -e "${YELLOW}Git already installed. ${NC}"
-      fi
-
-      if !(hash go 2>/dev/null); then
-        echo -e "${RED}GO not installed. ${NC}"
-        echo -e "${YELLOW}Install go ${NC}"
-        sudo pacman -S go
-      else
-        echo -e "${YELLOW}GO already installed. ${NC}"
-      fi 
-
-      if !(hash yay 2>/dev/null); then
-        echo -e "${RED}Yay not installed.${NC}"
-        echo -e "${YELLOW}Install Yay${NC}"
-        git clone https://aur.archlinux.org/yay.git
-        cd yay
-        makepkg -si
-        cd ..
-        rm -rf yay
-      else
-        echo -e "${YELLOW}Yay already installed.${NC}"
-      fi
+    if !(hash git 2>/dev/null ); then
+      echo -e "${RED}GIT not installed. ${NC}"
+      echo -e "${YELLOW}Install git ${NC}"
+      sudo pacman -S --needed git
     else
-      echo -e "\t${REDB}!!! Install yay as non root user !!!${NC}"
-      exit 1
+      echo -e "${YELLOW}Git already installed. ${NC}"
+    fi
+
+    if !(hash go 2>/dev/null); then
+      echo -e "${RED}GO not installed. ${NC}"
+      echo -e "${YELLOW}Install go ${NC}"
+      sudo pacman -S --needed go
+    else
+      echo -e "${YELLOW}GO already installed. ${NC}"
+    fi 
+
+    if !(hash yay 2>/dev/null); then
+      echo -e "${RED}Yay not installed.${NC}"
+      echo -e "${YELLOW}Install Yay${NC}"
+      git clone https://aur.archlinux.org/yay.git
+      cd yay
+      makepkg -si
+      cd ..
+      rm -rf yay
+    else
+      echo -e "${YELLOW}Yay already installed.${NC}"
     fi
   }
 
@@ -274,7 +295,7 @@ if [ $EDITED == "YES" ]; then
         echo -e "rankmirrors not installed"
         echo -e "Install pacman-contrib"
         sudo pacman -Sy
-        sudo pacman -S pacman-contrib
+        sudo pacman -S --needed pacman-contrib
         confMirrorBr
       else # if installed
         sudotest  
@@ -285,7 +306,7 @@ if [ $EDITED == "YES" ]; then
         echo -e "rankmirrors not installed"
         echo -e "Install pacman-contrib"
         pacman -Sy
-        pacman -S pacman-contrib
+        pacman -S --needed pacman-contrib
         confMirrorBr
       else # if installed
         curl -s "https://www.archlinux.org/mirrorlist/?country=BR&protocol=http&protocol=https&ip_version=4&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -v -n 8 - > /etc/pacman.d/mirrorlist
@@ -296,6 +317,7 @@ if [ $EDITED == "YES" ]; then
 
   confLiveCD(){ # --confLiveCD
     echo -e "${YELLOW}Configure from LiveCD...${NC}"
+    roottest
     loadkeys $KEYBOARD
     echo $LANG1 > /etc/locale.gen
     locale-gen
@@ -343,6 +365,7 @@ if [ $EDITED == "YES" ]; then
 
   installLiveCD(){ # --installLiveCD
     echo -e "${YELLOW}Install from LiveCD...${NC}"
+    roottest
     if [ -f "/ArchRestore.sh" ]; then
       cp /ArchRestore.sh /mnt/
     else
@@ -372,6 +395,7 @@ if [ $EDITED == "YES" ]; then
 
   installChroot(){ # --installChroot
     echo -e "${YELLOW}Install inside arch-chroot...${NC}"
+    roottest
     echo -e "${YELLOW}Configure timezone${NC}"
 
     loadkeys $KEYBOARD
@@ -420,11 +444,11 @@ if [ $EDITED == "YES" ]; then
     echo "127.0.1.1	$HOST1.localdomain	$HOST1" >> /etc/hosts
 
     echo -e "${YELLOW}Add candies to pacman.conf${NC}"
-    sed -i '/#Color/c\Color' /etc/pacman.conf
-    sed -i '/#CheckSpace/c\CheckSpace' /etc/pacman.conf
-    sed -i '/#TotalDownload/c\TotalDownload' /etc/pacman.conf
-    sed -i '/#[multilib]/c\[multilib]' /etc/pacman.conf
-    sed -i '/#Include = /etc/pacman.d/mirrorlist/c\Include = /etc/pacman.d/mirrorlist' /etc/pacman.conf
+    sed -i 's/.*#Color.*/Color/' /etc/pacman.conf
+    sed -i 's/.*#CheckSpace.*/CheckSpace/' /etc/pacman.conf
+    sed -i 's/.*#TotalDownload.*/TotalDownload/' /etc/pacman.conf
+    sed -i 's/.*#[multilib].*/[multilib]/' /etc/pacman.conf
+    sed -i 's/.*#Include = /etc/pacman.d/mirrorlist.*/Include = /etc/pacman.d/mirrorlist/' /etc/pacman.conf
     
     echo -e "${YELLOW}mkinitcpio -p linux...${NC}\n"
     mkinitcpio -p linux
@@ -433,7 +457,7 @@ if [ $EDITED == "YES" ]; then
     passwd
 
     echo -e "${YELLOW}Install grub and os-prober${NC}"
-    pacman -S grub os-prober
+    pacman -S --needed grub os-prober
     
     echo -e "\n${YELLOW}grub-install $MBR${NC}"
     grub-install $MBR
@@ -455,16 +479,18 @@ if [ $EDITED == "YES" ]; then
 
   installpkgs(){ # --installPkgs
       echo -e "${YELLOW}Install packages...${NC}"
+      roottest
       confMirrorBr
-      sudotest
-      sudo pacman -S --needed qt xfce4 xfce4-goodies texlive-most
-      sudo pacman -S --needed curl jq lm_sensors bind-tools translate-shell
-      sudo pacman -S --needed ${packagelist[@]}
+      # awk '{printf "%s"" ",$0}' Arch-pkglist.txt > pkgline.txt
+      pacman -S --needed qt xfce4 xfce4-goodies texlive-most
+      pacman -S --needed curl jq lm_sensors bind-tools translate-shell
+      pacman -S --needed ${packagelist[@]}
   }
 
 
   installYayPkgs(){ # --installYayPkgs
     echo -e "${YELLOW}Install Yay packages...${NC}"
+    notroottest
     installYay
     yay -S visual-studio-code-bin
     yay -S latex-beamer
@@ -478,6 +504,7 @@ if [ $EDITED == "YES" ]; then
 
   confUser(){ # --confUser
     echo -e "${YELLOW}Configure admin user...${NC}"
+    roottest
     echo -e "${YELLOW}Create user $USER ${NC}"
     useradd -m -G wheel,disk,users,lp,sys,network,power -s /bin/bash $USER
     passwd $USER
@@ -487,111 +514,108 @@ if [ $EDITED == "YES" ]; then
 
 
   installNvidia(){ # --installNvidia
-    echo -e "${YELLOW}Install ${GREEN}NVIDIA${NC} ${YELLOW}and Lightdm...${NC}"
-    pacman -S nvidia nvidia-settings nvidia-utils
-    
+    echo -e "${YELLOW}Install ${NC}${GREEN}NVIDIA${NC}"
+    roottest
+    pacman -S --needed nvidia nvidia-settings nvidia-utils
+    #pacman -S --needed cuda
     SWAPID=$(blkid -o value -s UUID $SWAP)
     echo -e "${YELLOW}Configure /etc/default/grub${NC}"
     sed -i "$A s/.*GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="\"resume=UUID="$(blkid -o value -s UUID $SWAP)"" rhgb ipv6.disable=1 nouveau.modeset=0 rd.driver.blacklist=nouveau\"/" /etc/default/grub
     sed -i 's/.*GRUB_GFXMODE=.*/GRUB_GFXMODE=1920x1080x32,auto/' /etc/default/grub
+    
+    echo -e "${YELLOW}Update grub ...${NC}"
+    grub-mkconfig -o /boot/grub/grub.cfg
+    
+    echo -e "${GREEN}Optionally:${NC}"
+    echo -e "${YELLOW}\t$0 --installLDM${NC}"
+
     exit 0
   }
 
 
   installLDM(){ # --installLDM
     echo -e "${YELLOW}Install Lightdm...{NC}"
-    if [[ $(/usr/bin/id -u) -ne 0 ]]; then # if not root
-      sudotest
-      sudo pacman -S lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
-      sudo systemctl enable lightdm.service --force
-    else
-      pacman -S lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
-      systemctl enable lightdm.service --force
-    fi
+    roottest
+    pacman -S --needed lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
+    systemctl enable lightdm.service --force
   }
 
 
   installconky(){ # --installConky
     echo -e "${YELLOW}Install Conky...${NC}"
-    if [[ $(/usr/bin/id -u) -ne 0 ]]; then # if not root
-      if !(hash sudo 2>/dev/null); then
-        echo -e "${RED}SUDO not installed.${NC}"
-        echo -e "${YELLOW}Please install sudo${NC}"
-        exit 1
-      else
-        echo -e "${YELLOW}SUDO already installed.${NC}"
+    sudotest
+    notroottest
     
-        git clone https://github.com/brndnmtthws/conky
-        cd conky;mkdir build;cd build
-        cmake -D CMAKE_BUILD_TYPE=Release -D MAINTAINER_MODE=ON -D BUILD_CURL=ON -D BUILD_LUA_RSVG=ON -D BUILD_LUA_CAIRO=ON -D BUILD_LUA_IMLIB2=ON -D BUILD_IMLIB2=ON -D BUILD_RSS=ON -D BUILD_WEATHER_METAR=ON -D BUILD_WEATHER_XOAP=ON -D BUILD_JOURNAL=ON -D BUILD_WLAN=ON -D BUILD_NVIDIA=ON -D BUILD_XDBE=ON -D BUILD_XSHAPE=ON -D CMAKE_INSTALL_PREFIX=/usr ..
-        make -j6
-        sudo make install
-        cd ..;cd ..
-        rm -rf conky
-      fi
-    else
-      echo -e "\t${REDB}!!! Install conky as $USER !!!${NC}"
-    fi
+    git clone https://github.com/brndnmtthws/conky
+    cd conky;mkdir build;cd build
+    cmake -D CMAKE_BUILD_TYPE=Release -D MAINTAINER_MODE=ON -D BUILD_CURL=ON -D BUILD_LUA_RSVG=ON -D BUILD_LUA_CAIRO=ON -D BUILD_LUA_IMLIB2=ON -D BUILD_IMLIB2=ON -D BUILD_RSS=ON -D BUILD_WEATHER_METAR=ON -D BUILD_WEATHER_XOAP=ON -D BUILD_JOURNAL=ON -D BUILD_WLAN=ON -D BUILD_NVIDIA=ON -D BUILD_XDBE=ON -D BUILD_XSHAPE=ON -D CMAKE_INSTALL_PREFIX=/usr ..
+    make -j6
+    sudo make install
+    cd ..;cd ..
+    rm -rf conky
+    
     exit 0
   }
 
 
   restoreOpenBox(){ # --restoreOpenBox
-    if [[ $(/usr/bin/id -u) -ne 0 ]]; then # if not root
-      echo -e "${YELLOW}Restore Openbox Autostart...${NC}"
+    echo -e "${YELLOW}Restore Openbox Autostart...${NC}"
+    # notroottest
 
-      # echo "(nohup ~/.fehbg &)" > ~/.config/openbox/autostart
-      # echo "# Painel Tint2." >> ~/.config/openbox/autostart
-      # echo "(nohup /usr/bin/tint2 &)" >> ~/.config/openbox/autostart
-      # echo "(nohup /usr/bin/numlockx &)" >> ~/.config/openbox/autostart
-      # echo "(nohup /usr/bin/volumeicon &)" >> ~/.config/openbox/autostart
-      # echo "(nohup /usr/bin/nm-applet &)" >> ~/.config/openbox/autostart
-      # echo "(nohup /usr/bin/pamac-tray &)" >> ~/.config/openbox/autostart
-      # echo "" >> ~/.config/openbox/autostart
-      # echo "# Monitor Conky." >> ~/.config/openbox/autostart
-      # echo "# pacman -S curl jq lm_sensors bind-tools translate-shell" >> ~/.config/openbox/autostart
-      # echo "(nohup /usr/bin/conky -b -c ~/.conky/weather-conkyrc &) " >> ~/.config/openbox/autostart
-      # echo "(nohup /usr/bin/conky -b -c ~/.conky/my-conkyrc &) " >> ~/.config/openbox/autostart
-      # echo "(nohup /usr/bin/conky -b -c ~/.conky/cheat-conkyrc &) " >> ~/.config/openbox/autostart
-      # echo "#(nohup /usr/bin/conky -p 3 &) " >> ~/.config/openbox/autostart
-      # echo "" >> ~/.config/openbox/autostart
-      # echo "$BG -solid \"#303030\"" >> ~/.config/openbox/autostart
-      # echo "" >> ~/.config/openbox/autostart
-      # echo "export XCURSOR_THEME=\"Ecliz-Arch\"k" >> ~/.config/openbox/autostart
-      # echo "export QT_QPA_PLATFORMTHEME=\"qt5ct\"" >> ~/.config/openbox/autostart
-      # echo "export QT_AUTO_SCREEN_SCALE_FACTOR=0" >> ~/.config/openbox/autostart
+    # echo "(nohup ~/.fehbg &)" > ~/.config/openbox/autostart
+    # echo "# Painel Tint2." >> ~/.config/openbox/autostart
+    # echo "(nohup /usr/bin/tint2 &)" >> ~/.config/openbox/autostart
+    # echo "(nohup /usr/bin/numlockx &)" >> ~/.config/openbox/autostart
+    # echo "(nohup /usr/bin/volumeicon &)" >> ~/.config/openbox/autostart
+    # echo "(nohup /usr/bin/nm-applet &)" >> ~/.config/openbox/autostart
+    # echo "(nohup /usr/bin/pamac-tray &)" >> ~/.config/openbox/autostart
+    # echo "" >> ~/.config/openbox/autostart
+    # echo "# Monitor Conky." >> ~/.config/openbox/autostart
+    # echo "# pacman -S --needed curl jq lm_sensors bind-tools translate-shell" >> ~/.config/openbox/autostart
+    # echo "(nohup /usr/bin/conky -b -c ~/.conky/weather-conkyrc &) " >> ~/.config/openbox/autostart
+    # echo "(nohup /usr/bin/conky -b -c ~/.conky/my-conkyrc &) " >> ~/.config/openbox/autostart
+    # echo "(nohup /usr/bin/conky -b -c ~/.conky/cheat-conkyrc &) " >> ~/.config/openbox/autostart
+    # echo "#(nohup /usr/bin/conky -p 3 &) " >> ~/.config/openbox/autostart
+    # echo "" >> ~/.config/openbox/autostart
+    # echo "$BG -solid \"#303030\"" >> ~/.config/openbox/autostart
+    # echo "" >> ~/.config/openbox/autostart
+    # echo "export XCURSOR_THEME=\"Ecliz-Arch\"k" >> ~/.config/openbox/autostart
+    # echo "export QT_QPA_PLATFORMTHEME=\"qt5ct\"" >> ~/.config/openbox/autostart
+    # echo "export QT_AUTO_SCREEN_SCALE_FACTOR=0" >> ~/.config/openbox/autostart
 
-      # echo "#!/bin/sh" > ~/.fehbg
-      # echo "/usr/bin/feh --bg-scale '/path-to-image/image.jpg'" >> ~/.fehbg
-    else
-      echo -e "\t${REDB}!!! Configure OpenBox as $USER !!!${NC}"
-      exit 1
-    fi
+    # echo "#!/bin/sh" > ~/.fehbg
+    # echo "/usr/bin/feh --bg-scale '/path-to-image/image.jpg'" >> ~/.fehbg
+    
     exit 0
   }
 
 
   confSys(){ # --confSys
-    if [[ $(/usr/bin/id -u) -ne 0 ]]; then # if not root
-      echo -e "\t${REDB}!!! --confSys MUST be run as root !!!${NC}"
-      exit 1
-    else
-      echo -e "${YELLOW}Configure system...${NC}"
-      loadkeys $KEYBOARD
-      systemctl enable dhcpcd
-      systemctl start dhcpcd
-      confUser
-      confMirrorBr
-      installpkgs
-      echo -e "${GREEN}Optionally:${NC}"
-      echo -e "${YELLOW}\t$0 --installLDM${NC}"
-      echo -e "${YELLOW}\t$0 --installYay${NC}"
-      echo -e "${YELLOW}\t$0 --installYayPkgs${NC}"
-      echo -e "${YELLOW}\t$0 --installNvidia${NC}"
-      echo -e "${YELLOW}\t$0 --installConky${NC}"
-    fi
+    echo -e "${YELLOW}Configure system...${NC}"
+    roottest
+      
+    loadkeys $KEYBOARD
+    systemctl enable dhcpcd
+    systemctl start dhcpcd
+    confUser
+    confMirrorBr
+    installpkgs
+    echo -e "${GREEN}Optionally:${NC}"
+    echo -e "${YELLOW}\t$0 --installLDM${NC}"
+    echo -e "${YELLOW}\t$0 --installYay${NC}"
+    echo -e "${YELLOW}\t$0 --installYayPkgs${NC}"
+    echo -e "${YELLOW}\t$0 --installNvidia${NC}"
+    echo -e "${YELLOW}\t$0 --installConky${NC}"
+    
+    exit 0
   }
 
+
+  ###### END SCRIPT FUNCTIONS ######
+
+
+
+  ###### BEGIN MAIN SCIPT FUNCTION ######
 
   main(){
     case $KEY in
@@ -699,6 +723,8 @@ if [ $EDITED == "YES" ]; then
     esac
   exit 0
   }
+
+  ###### END MAIN SCRIPT FUNCTION ######
 
 
   ### Execute Main
