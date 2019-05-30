@@ -5,27 +5,31 @@
 # github.com/fzappa/archrestore
 #
 
-USER="user"
-MBR="/dev/sda"
-ROOT="/dev/sda1"
-SWAP="/dev/sda3"
+USER=""
 
+### Install
+MBR=""  # /dev/sdX
+ROOT="" # /dev/sdX1
 MKFS="mkfs.ext4"
-NEWSWAP="NO"  # YES | NO
-NEWDISK="YES" # YES | NO
 
+### Swap
+SWAP="" # /dev/sdX3
+NEWSWAP="NO"  # YES | NO
+
+### Locale
 KEYBOARD="br-abnt2"
 LANG1="pt_BR.UTF-8 UTF-8"
 LANG2="pt_BR.UTF-8"
-HOST1="orion"
+XKB="localectl set-x11-keymap br abnt2"
+
+### Network and packages
+COUNTRY="country=BR"  # "country=BR&country=US"
+HOSTNAME="hostname"
+PACSTRAP="base"       # "base base-devel"
 
 EDITED="NO" # YES | NO
 
-
-
-
-
-############### COLORS ###############
+#############################################################
 
 RED='\e[0;31m'
 REDB='\e[1;31;5m'
@@ -41,8 +45,6 @@ NC='\e[0m' # No Color
 
 
 
-############### BEGIN ###############
-
 if [ $EDITED == "YES" ]; then
 
 
@@ -50,79 +52,73 @@ if [ $EDITED == "YES" ]; then
   AURPKG="Aur-pkglist.txt"
   KEY="$1"
 
-
+  # awk '{printf "%s"" ",$0}' Arch-pkglist.txt > pkgline.txt
   packagelist=( 
   accountsservice acpi acpid alsa-firmware alsa-utils amd-ucode android-tools \ 
-  android-udev archlinux-wallpaper archlinux-xdg-menu audacious autoconf \ 
-  automake b43-fwcutter bash bind-tools binutils bison blueman boost \ 
-  btrfs-progs bzip2 catfish chromium cmake coreutils cpupower crda cronie \ 
+  android-udev audacious autoconf automake avahi b43-fwcutter bash bind-tools \ 
+  binutils bison blueman boost btrfs-progs bzip2 \ 
+  cantarell-fonts catfish chromium cmake coreutils cpupower crda cronie \ 
   cryptsetup cups cups-pdf cups-pk-helper device-mapper dhclient dhcpcd \ 
   diffutils dmenu dmidecode dmraid dnsmasq dosfstools e2fsprogs \ 
   ecryptfs-utils efibootmgr eigen engrampa evince exfat-utils exo \ 
-  f2fs-tools fakeroot feh ffmpegthumbnailer file file-roller filesystem \ 
-  findutils firefox flatpak flex galculator-gtk2 garcon gawk gcc \ 
-  gcc-libs gcolor2 gettext ghostscript gimp git glibc gnome-icon-theme \ 
-  gnome-keyring go gparted grep groff grub gsfonts gst-libav \ 
-  gst-plugins-bad gst-plugins-ugly gtk-xfce-engine gufw gvfs \ 
-  gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gzip haskell-iwlib \ 
-  haveged hexchat hplip htop inetutils iproute2 iputils ipw2100-fw \ 
-  ipw2200-fw jdk8-openjdk jfsutils jq jre8-openjdk jre8-openjdk-headless \ 
-  less lib32-flex lib32-gtk3 lib32-libva-intel-driver \ 
-  lib32-libva-mesa-driver lib32-libva-vdpau-driver lib32-mesa-demos \ 
-  lib32-nvidia-utils libdvdcss libgsf libgtop libopenraw libreoffice-still \ 
-  libtool libva-intel-driver libva-mesa-driver libva-vdpau-driver licenses \ 
-  light-locker lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings \ 
-  linux linux-firmware logrotate lsb-release lshw lvm2 lxappearance-obconf \ 
-  m4 make man-db man-pages mc mdadm memtest86+ menumaker mesa-demos \ 
-  mlocate mobile-broadband-provider-info modemmanager mousepad mplayer \ 
-  mtpfs nano netctl network-manager-applet networkmanager \ 
+  f2fs-tools fakeroot feh ffmpeg ffmpegthumbnailer file file-roller \ 
+  filesystem findutils firefox flatpak flex freetype2 galculator-gtk2 \ 
+  garcon gawk gcc gcc-libs gcolor2 gettext ghostscript gimp git \ 
+  glibc gnome-icon-theme gnome-keyring gnome-themes-extra go \ 
+  gparted grep grub gsfonts gst-libav gst-plugins-bad \ 
+  gst-plugins-base gst-plugins-good gst-plugins-ugly gtk3 gufw \ 
+  gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gzip \ 
+  haskell-iwlib haveged hexchat hplip htop inetutils iproute2 \ 
+  iptables iputils ipw2100-fw ipw2200-fw jdk8-openjdk jfsutils jq \ 
+  jre8-openjdk jre8-openjdk-headless less lib32-flex lib32-gtk3 \ 
+  lib32-libva-intel-driver lib32-libva-mesa-driver lib32-libva-vdpau-driver \ 
+  lib32-mesa-demos lib32-nvidia-utils libdvdcss libgsf libgtop libopenraw \ 
+  libreoffice-still libtool libva-intel-driver libva-mesa-driver \ 
+  libva-vdpau-driver licenses light-locker lightdm lightdm-gtk-greeter \ 
+  lightdm-gtk-greeter-settings linux-firmware linux \ 
+  virtualbox-host-modules-arch logrotate lsb-release \ 
+  lshw lvm2 lxappearance-obconf-gtk3 m4 make man-db man-pages \ 
+  mc mdadm memtest86+ \ 
+  menumaker mesa-demos mlocate \ 
+  mobile-broadband-provider-info modemmanager mousepad mplayer \ 
+  mtpfs nano network-manager-applet networkmanager \ 
   networkmanager-openconnect networkmanager-openvpn networkmanager-pptp \ 
-  networkmanager-vpnc nfs-utils nss-mdns ntfs-3g ntp numlockx nvidia \ 
-  nvidia-settings nvidia-utils obconf oblogout obmenu octave openbox \ 
-  openssh opera orage os-prober p7zip pacman pacman-contrib parole \ 
-  patch patchutils pavucontrol pciutils pcmanfm perl perl-file-mimeinfo \ 
-  pidgin pkgconf poppler-data poppler-glib powertop procps-ng psmisc \ 
-  pulseaudio pulseaudio-bluetooth pulseaudio-zeroconf pyqt5-common \ 
-  pyside2 python-iwlib python-pillow python-pip python-pyqt5 \ 
-  python-reportlab qpdfview qt5-3d qt5-base qt5-canvas3d qt5-charts \ 
-  qt5-connectivity qt5-datavis3d qt5-declarative qt5-doc qt5-examples \ 
-  qt5-gamepad qt5-graphicaleffects qt5-imageformats qt5-location \ 
-  qt5-multimedia qt5-networkauth qt5-purchasing qt5-quickcontrols \ 
-  qt5-quickcontrols2 qt5-remoteobjects qt5-script qt5-scxml \ 
-  qt5-sensors qt5-serialbus qt5-serialport qt5-speech qt5-svg \ 
-  qt5-tools qt5-translations qt5-virtualkeyboard qt5-wayland \ 
-  qt5-webchannel qt5-webengine qt5-webglplugin qt5-websockets \ 
-  qt5-webview qt5-x11extras qt5-xmlpatterns qtcreator reiserfsprogs \ 
-  ristretto rsync s-nail sakura samba screenfetch sed shadow \ 
-  smartmontools speedcrunch splix subversion sudo sysfsutils \ 
-  system-config-printer systemd systemd-sysvcompat tar \ 
-  telegram-desktop terminus-font texinfo texlive-bibtexextra \ 
-  texlive-core texlive-fontsextra texlive-formatsextra \ 
-  texlive-games texlive-humanities texlive-latexextra \ 
-  texlive-music texlive-pictures texlive-pstricks texlive-publishers \ 
-  texlive-science texstudio thunar thunar-archive-plugin \ 
-  thunar-media-tags-plugin thunar-volman thunderbird tint2 \ 
+  networkmanager-vpnc nfs-utils nss-mdns ntfs-3g ntp numlockx nvidia-utils \ 
+  obconf oblogout obmenu octave openbox \ 
+  openresolv openssh opera orage os-prober p7zip pacman patch \ 
+  patchutils pavucontrol pciutils pcmanfm-gtk3 perl perl-file-mimeinfo pidgin \ 
+  pkgconf poppler-data poppler-glib powertop procps-ng psmisc \ 
+  pulseaudio-bluetooth pulseaudio pulseaudio-zeroconf pyqt5-common \ 
+  python-iwlib python-pillow python-pip python-pyqt5 python-reportlab \ 
+  qtcreator reiserfsprogs rsync s-nail sakura samba screenfetch \ 
+  sed shadow simplescreenrecorder smartmontools \ 
+  speedcrunch splix subversion sudo sysfsutils \ 
+  system-config-printer systemd-sysvcompat tar \ 
+  telegram-desktop terminus-font texinfo texlive-bibtexextra texlive-core \ 
+  texlive-fontsextra texlive-formatsextra texlive-games texlive-humanities \ 
+  texlive-latexextra texlive-music texlive-pictures texlive-pstricks \ 
+  texlive-publishers texlive-science texstudio thunar-archive-plugin \ 
+  thunar thunar-media-tags-plugin thunar-volman thunderbird tint2 \ 
   tlp translate-shell ttf-bitstream-vera ttf-droid ttf-inconsolata \ 
-  ttf-indic-otf ttf-liberation ttf-ubuntu-font-family tumbler \ 
-  udiskie udisks2 unace unrar usb_modeswitch usbutils util-linux \ 
-  vi viewnior vim virtualbox vlc vnstat volumeicon wget which \ 
-  wpa_supplicant xcursor-simpleandsoft xcursor-vanilla-dmz-aa \ 
-  xdg-user-dirs xf86-input-elographics xf86-input-evdev \ 
-  xf86-input-keyboard xf86-input-mouse xf86-input-void xfburn \ 
-  xfce4-appfinder xfce4-artwork xfce4-battery-plugin \ 
-  xfce4-clipman-plugin xfce4-cpufreq-plugin xfce4-cpugraph-plugin \ 
-  xfce4-datetime-plugin xfce4-dict xfce4-diskperf-plugin \ 
-  xfce4-eyes-plugin xfce4-fsguard-plugin xfce4-genmon-plugin \ 
-  xfce4-mailwatch-plugin xfce4-mount-plugin xfce4-mpc-plugin \ 
-  xfce4-netload-plugin xfce4-notes-plugin xfce4-notifyd \ 
-  xfce4-panel xfce4-power-manager xfce4-pulseaudio-plugin \ 
-  xfce4-screenshooter xfce4-sensors-plugin xfce4-session \ 
-  xfce4-settings xfce4-smartbookmark-plugin xfce4-systemload-plugin \ 
-  xfce4-taskmanager xfce4-terminal xfce4-time-out-plugin \ 
-  xfce4-timer-plugin xfce4-verve-plugin xfce4-wavelan-plugin \ 
-  xfce4-weather-plugin xfce4-whiskermenu-plugin xfce4-xkb-plugin \ 
-  xfconf xfdesktop xfsprogs xfwm4 xfwm4-themes xorg-twm xorg-xkill \ 
-  xterm yelp zsh 
+  ttf-indic-otf ttf-liberation ttf-ubuntu-font-family tumbler udiskie \ 
+  udisks2 unace unrar usb_modeswitch usbutils util-linux vi viewnior \ 
+  vim virtualbox virtualbox-guest-modules-arch virtualbox-guest-iso virtualbox-guest-utils vlc vnstat \ 
+  volumeicon wget which wmctrl wpa_supplicant \ 
+  xcursor-simpleandsoft xcursor-vanilla-dmz-aa xdg-user-dirs \ 
+  xdg-utils xf86-input-elographics xf86-input-evdev xf86-input-keyboard \ 
+  xf86-input-libinput xf86-input-mouse xf86-input-void xfburn \ 
+  xfce4-appfinder xfce4-battery-plugin xfce4-clipman-plugin \ 
+  xfce4-cpufreq-plugin xfce4-cpugraph-plugin xfce4-dict xfce4-diskperf-plugin \ 
+  xfce4-fsguard-plugin xfce4-genmon-plugin xfce4-mailwatch-plugin \ 
+  xfce4-mount-plugin xfce4-mpc-plugin xfce4-netload-plugin xfce4-notes-plugin \ 
+  xfce4-notifyd xfce4-panel xfce4-power-manager \ 
+  xfce4-pulseaudio-plugin xfce4-screenshooter xfce4-sensors-plugin \ 
+  xfce4-session xfce4-settings xfce4-smartbookmark-plugin \ 
+  xfce4-systemload-plugin xfce4-taskmanager xfce4-terminal \ 
+  xfce4-time-out-plugin xfce4-timer-plugin xfce4-verve-plugin \ 
+  xfce4-wavelan-plugin xfce4-weather-plugin xfce4-whiskermenu-plugin \ 
+  xfce4-xkb-plugin xfconf xfdesktop xfsprogs xfwm4 \ 
+  xorg-server xorg-twm xorg-xinit xorg-xkill xterm yelp zsh 
   )
 
 
@@ -136,11 +132,11 @@ if [ $EDITED == "YES" ]; then
     echo -e "\t#################################################################\n"
     echo -e "\tUsage: ${WHITE}$0${NC} ${YELLOW}<option>${NC}\n"
     echo -e "\t${YELLOW}-b ${NC} | ${YELLOW}--backup${NC}\t\t: ${RED}Generate backup list of Arch and Aur packages${NC}"
-    echo -e "\t${YELLOW}-ba${NC} | ${YELLOW}--backuparch${NC}\t: ${RED}Generate backup list of Arch packages${NC}"
-    echo -e "\t${YELLOW}-bu${NC} | ${YELLOW}--backupaur${NC}\t: ${RED}Generate backup list of Aur packages${NC}"
+    echo -e "\t${YELLOW}-ba${NC} | ${YELLOW}--backupArch${NC}\t: ${RED}Generate backup list of Arch packages${NC}"
+    echo -e "\t${YELLOW}-bu${NC} | ${YELLOW}--backupAur${NC}\t: ${RED}Generate backup list of Aur packages${NC}"
     echo -e "\t${YELLOW}-r${NC}  | ${YELLOW}--restore${NC}\t\t: ${RED}Restore Arch and Aur packages from previous backup list${NC}"
-    echo -e "\t${YELLOW}-ra${NC} | ${YELLOW}--restorearch${NC}\t: ${RED}Restore packages from previous backup list from Arch packages${NC}"
-    echo -e "\t${YELLOW}-ru${NC} | ${YELLOW}--restoreaur${NC}\t: ${RED}Restore packages from previous backup list from Aur packages${NC}\n"
+    echo -e "\t${YELLOW}-ra${NC} | ${YELLOW}--restoreArch${NC}\t: ${RED}Restore packages from previous backup list from Arch packages${NC}"
+    echo -e "\t${YELLOW}-ru${NC} | ${YELLOW}--restoreAur${NC}\t: ${RED}Restore packages from previous backup list from Aur packages${NC}\n"
 
     echo -e "\t${YELLOW}      --confLiveCD${NC}\t: ${RED}Configure Arch from livecd${NC}"
     echo -e "\t${YELLOW}      --installLiveCD${NC}\t: ${RED}Install Arch from livecd${NC}"
@@ -154,10 +150,11 @@ if [ $EDITED == "YES" ]; then
     echo -e "\t${YELLOW}      --installNvidia${NC}\t: ${RED}Install NVIDIA and CUDA${NC}"
     echo -e "\t${YELLOW}      --installConky${NC}\t: ${RED}Install Conky from git${NC}"
     echo -e "\t${YELLOW}      --installLDM${NC}\t: ${RED}Install Lightdm login${NC}"
-    echo -e "\t${YELLOW}      --restoreOpenBox${NC}\t: ${RED}Restore OpenBox desktop${NC}\n"
 
-    echo -e "\t${YELLOW}      --confMirrorBr${NC}\t: ${RED}Live fastest mirrors config${NC}"
-    echo -e "\n\n"
+    echo -e "\n\t${YELLOW}      --restoreMyConf${NC}\t: ${RED}Restore my configs${NC} ${GREEN}=>${NC} ${WHITE}Config as your flavor. ;)${NC}"
+
+    echo -e "\n\t${YELLOW}      --confMirror${NC}\t: ${RED}Live fastest mirrors config${NC}"
+    echo -e "\n"
     echo -e "\t\t\t${REDB}!!!   WARNING   !!!${NC}"
     echo -e "\t\t${YELLOW}You ${NC}${RED}MUST${NC}${YELLOW} read and edit the script${NC}"
     echo -e "\t\t${YELLOW}for your own convenience${NC}\n\n"
@@ -165,13 +162,20 @@ if [ $EDITED == "YES" ]; then
     exit 0
   }
 
-  ###### BEGIN SCRIPT TEST FUNCTIONS ######
+  ###### BEGIN TEST FUNCTIONS ######
+
+  testmbr(){
+    if [[ -z "${MBR//}" ]]; then # if is empty
+      echo -e "${REDB}ERRO:${NC} ${RED}MBR disk not defined.${NC}"
+      exit 1
+    fi
+  }
 
   sudotest(){
     if !(hash sudo 2>/dev/null); then
       echo -e "${RED}SUDO not installed.${NC}"
       if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-        echo -e "${YELLOW}Please, login as root and install sudo${NC}"
+        echo -e "${REDB}ERRO:${NC} ${YELLOW}Please, login as root and install sudo${NC}"
         exit 1
       else
         echo -e "${YELLOW}Install sudo${NC}"
@@ -187,54 +191,54 @@ if [ $EDITED == "YES" ]; then
     if [[ $(/usr/bin/id -u) -ne 0 ]]; then
       echo -e "${GREENB}Runing as user${NC}"
     else
-      echo -e "${YELLOWB}This must be run as user${NC}"
+      echo -e "${REDB}ERRO:${NC} ${YELLOW}This must be run as user${NC}"
       exit 1
     fi
   }
 
   roottest(){
     if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-      echo -e "${REDB}This must be run as root${NC}"
+      echo -e "${REDB}ERRO:${NC} ${YELLOW}This must be run as root${NC}"
       exit 1
     else
       echo -e "${REDB}Runing as root${NC}"
     fi
   }
 
-  ###### END SCRIPT TEST FUNCTIONS ######
+  ###### END TEST FUNCTIONS ######
 
 
 
-  ###### BEGIN SCRIPT FUNCTIONS ######
+  ###### BEGIN PROGRAM FUNCTIONS ######
 
-  backupArch(){ # --backuparch
+  backupArch(){ # --backupArch
     echo -e "${YELLOW}Backup Arch packages to $ARCHPKG ${NC}"
     pacman -Qqen > $ARCHPKG
   }
 
 
-  backupAur(){ # --backupaur
+  backupAur(){ # --backupAur
     echo -e "${YELLOW}Backup Aur packages to $AURPKG ${NC}"
     pacman -Qqem > $AURPKG
   }
 
 
-  restoreArch(){ # --restorearch
+  restoreArch(){ # --restoreArch
     if [ -f "$ARCHPKG" ]; then
       sudotest
       echo -e "${YELLOW}Restore Arch packages from $ARCHPKG$... ${NC}"
       sudo pacman -S --needed $(comm -12 <(pacman -Slq|sort) <(sort $ARCHPKG) )
       echo -e "${YELLOW}Reinstalled all Arch packages\n. ${NC}"
     else
-      echo -e "${YELLOW}$ARCHPKG$ file not found ${NC}"
-      echo -e "${YELLOW}Run $0 --backuparch before ${NC}"
+      echo -e "${REDB}ERRO:${NC} ${YELLOW}$ARCHPKG$ file not found ${NC}"
+      echo -e "${YELLOW}Run $0 --backupArch before ${NC}"
       exit 1
     fi
     exit 0
   }
 
 
-  restoreAur(){ # --restoreaur
+  restoreAur(){ # --restoreAur
     if [ -f "$AURPKG" ]; then
       echo -e "${YELLOW}Restore AUR packages from $AURPKG...${NC}"
       notroottest
@@ -242,8 +246,8 @@ if [ $EDITED == "YES" ]; then
       yay -S --needed --noconfirm - < $AURPKG
       echo -e "${YELLOW}Reinstalled all Aur packages.\n${NC}"
     else
-      echo -e "${YELLOW}$AURPKG$ file not found ${NC}"
-      echo -e "${YELLOW}Run $0 --backupaur before ${NC}"
+      echo -e "${REDB}ERRO:${NC} ${YELLOW}$AURPKG$ file not found ${NC}"
+      echo -e "${YELLOW}Run $0 --backupAur before ${NC}"
       exit 1
     fi
     exit 0
@@ -267,7 +271,17 @@ if [ $EDITED == "YES" ]; then
     if !(hash go 2>/dev/null); then
       echo -e "${RED}GO not installed. ${NC}"
       echo -e "${YELLOW}Install go ${NC}"
-      sudo pacman -S --needed go
+      echo -e "${YELLOW}Check if $USER is in /home dir...${NC}"
+      if [ -d "/home/$USER" ]; then
+	      echo -e "${YELLOW}/home/$USER found!${NC}"
+        echo -e "${YELLOW}Creating /home/$USER/gopath${NC}"
+        mkdir -p /home/$USER/gopath/tmp
+        chown $USER:$USER /home/$USER/gopath -R
+        sudo pacman -S --needed go
+      else
+	      echo -e "${REDB}404 ERROR!${NC} ${YELLOW}/home/$USER not found!${NC}"
+	      exit 1
+      fi
     else
       echo -e "${YELLOW}GO already installed. ${NC}"
     fi 
@@ -275,6 +289,12 @@ if [ $EDITED == "YES" ]; then
     if !(hash yay 2>/dev/null); then
       echo -e "${RED}Yay not installed.${NC}"
       echo -e "${YELLOW}Install Yay${NC}"
+      if [ ! -d "/home/$USER/gopath/tmp" ]; then
+	echo -e "${YELLOW}/home/$USER/gopath/tmp not found!${NC}"
+        echo -e "${YELLOW}Creating /home/$USER/gopath/tmp${NC}"
+        mkdir -p /home/$USER/gopath/tmp
+        chown $USER:$USER /home/$USER/gopath -R
+      fi
       git clone https://aur.archlinux.org/yay.git
       cd yay
       makepkg -si
@@ -286,30 +306,21 @@ if [ $EDITED == "YES" ]; then
   }
 
 
-  confMirrorBr(){ # --confMirrorBr
-    echo -e "${YELLOW}Configure MirrorBR...${NC}"
-    echo -e "Findind fastest mirrors..."
+  confMirror(){ # --confMirror
+    echo -e "${YELLOW}Configure Mirror...${NC}"
     if [[ $(/usr/bin/id -u) -ne 0 ]]; then # if not root
-      if !(hash rankmirrors 2>/dev/null ); then # if not installed
-        sudotest
-        echo -e "rankmirrors not installed"
-        echo -e "Install pacman-contrib"
-        sudo pacman -Sy
-        sudo pacman -S --needed pacman-contrib
-        confMirrorBr
-      else # if installed
-        sudotest  
-        sudo curl -s "https://www.archlinux.org/mirrorlist/?country=BR&protocol=http&protocol=https&ip_version=4&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -v -n 8 - > /etc/pacman.d/mirrorlist
-      fi
+      echo -e "${REDB}ERRO:${NC}${RED}confMirror must be run as root!"
+      exit 1
     else # if root
       if !(hash rankmirrors 2>/dev/null ); then # if not installed
         echo -e "rankmirrors not installed"
         echo -e "Install pacman-contrib"
         pacman -Sy
         pacman -S --needed pacman-contrib
-        confMirrorBr
+        confMirror
       else # if installed
-        curl -s "https://www.archlinux.org/mirrorlist/?country=BR&protocol=http&protocol=https&ip_version=4&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -v -n 8 - > /etc/pacman.d/mirrorlist
+        echo -e "${YELLOW}Findind fastest mirrors...${NC}"
+        curl -s "https://www.archlinux.org/mirrorlist/?$COUNTRY&protocol=http&protocol=https&ip_version=4&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -v -n 8 - 2>&1 | tee /etc/pacman.d/mirrorlist
       fi 
     fi
   }
@@ -317,6 +328,7 @@ if [ $EDITED == "YES" ]; then
 
   confLiveCD(){ # --confLiveCD
     echo -e "${YELLOW}Configure from LiveCD...${NC}"
+    testmbr
     roottest
     loadkeys $KEYBOARD
     echo $LANG1 > /etc/locale.gen
@@ -325,40 +337,41 @@ if [ $EDITED == "YES" ]; then
     timedatectl set-ntp true
   
     echo -e "${YELLOW}Add candies to pacman.conf${NC}"
-    sed -i '/#Color/c\Color' /etc/pacman.conf
-    sed -i '/#CheckSpace/c\CheckSpace' /etc/pacman.conf
-    sed -i '/#TotalDownload/c\TotalDownload' /etc/pacman.conf
-    sed -i '/#[multilib]/c\[multilib]' /etc/pacman.conf
-    sed -i '/#Include = /etc/pacman.d/mirrorlist/c\Include = /etc/pacman.d/mirrorlist' /etc/pacman.conf
+    sed -i 's/.*#Color.*/Color/' /etc/pacman.conf
+    sed -i 's/.*#CheckSpace.*/CheckSpace/' /etc/pacman.conf
+    sed -i 's/.*#TotalDownload.*/TotalDownload/' /etc/pacman.conf
+    sed -i 's/.*\#\[multilib\].*/\[multilib\]/' /etc/pacman.conf
+    sed -i '/\[multilib\]/!b;n;cInclude = /etc/pacman.d/mirrorlist' /etc/pacman.conf 
 
   
     echo -e "${YELLOW}Now, creating partitions: ${NC}"
     
-    if [ $NEWSWAP == "YES" ]; then
+    if [ $NEWSWAP == "YES" ] && [[ -n "${SWAP//}" ]]; then # if yes and not empty
       echo -e "${REDB}Formating $SWAP as swap partition ${NC}"
       echo -e "${YELLOW}mkswap $SWAP${NC}"
       mkswap $SWAP
       echo -e "${YELLOW}swapon $SWAP${NC}"
       swapon $SWAP
-    else
+    elif [ $NEWSWAP == "NO" ] && [[ -n "${SWAP//}" ]]; then # if no and not empty
       echo -e "${YELLOW}$SWAP will not be formated ${NC}"
       echo -e "${YELLOW}Mounting $SWAP as swap partition ${NC}"
       echo -e "${YELLOW}swapon $SWAP ${NC}"
       swapon $SWAP
+    elif [[ -z "${SWAP//}" ]]; then  # if empty
+      echo -e "${RED}SWAP will not be created ${NC}"
     fi
 
-    if [ $NEWDISK == "YES" ]; then
+    if [[ -n "${ROOT//}" ]]; then # if not empty
       echo -e "${REDB}Formating $ROOT with $MKFS ${NC}"
       $MKFS $ROOT
       echo -e "${YELLOW}mounting $ROOT on /mnt ${NC}"
       mount $ROOT /mnt
+      echo -e "${YELLOW}Run: ${NC} ${RED}$0 --installLiveCD${NC}"
     else
-      echo -e "${YELLOW}$ROOT will not be formated ${NC}"
-      echo -e "${YELLOW}mounting $ROOT on /mnt ${NC}"
-      mount $ROOT /mnt
-    fi  
-
-    echo -e "${YELLOW}Run: ${NC} ${RED}$0 --installLiveCD${NC}"
+      echo -e "${REDB}System will not be installed${NC}"
+      echo -e "${RED}ROOT disk (/) not exists ${NC}"
+      exit 1
+    fi     
     exit 0
   }
 
@@ -382,9 +395,9 @@ if [ $EDITED == "YES" ]; then
       echo -e "${YELLOW} Continue...${NC}"
     fi
 
-    confMirrorBr
+    confMirror
     pacman -Sy
-    pacstrap /mnt base base-devel
+    pacstrap /mnt $PACSTRAP
     genfstab -p /mnt > /mnt/etc/fstab
     
     echo -e "${YELLOW}Run${NC} ${RED}arch-chroot /mnt${NC}"
@@ -395,6 +408,7 @@ if [ $EDITED == "YES" ]; then
 
   installChroot(){ # --installChroot
     echo -e "${YELLOW}Install inside arch-chroot...${NC}"
+    testmbr
     roottest
     echo -e "${YELLOW}Configure timezone${NC}"
 
@@ -402,8 +416,13 @@ if [ $EDITED == "YES" ]; then
     
     ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
     echo -e "${YELLOW}Synchronize clock${NC}"
-    timedatectl set-ntp true
-    hwclock --systohc
+    pacman -S --needed ntp
+    sed -i 's/0.arch.pool.ntp.org.*/a.st1.ntp.br/' /etc/ntp.conf
+    sed -i 's/1.arch.pool.ntp.org.*/b.st1.ntp.br/' /etc/ntp.conf
+    sed -i 's/2.arch.pool.ntp.org.*/c.st1.ntp.br/' /etc/ntp.conf
+    sed -i 's/3.arch.pool.ntp.org.*/d.st1.ntp.br/' /etc/ntp.conf
+    systemctl start ntpd
+    systemctl enable ntpd
 
     echo -e "${YELLOW}Configure /etc/locale.gen${NC}"
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
@@ -431,24 +450,24 @@ if [ $EDITED == "YES" ]; then
 
     echo "# KEYBOARD CONFIGURATION FILE" > /etc/default/keyboard
     echo "# Consult the keyboard(5) manual page." >> /etc/default/keyboard
-    echo "XKBMODEL=\"pc105\"" >> /etc/default/keyboard
+    echo "XKBMODEL=\"abnt2\"" >> /etc/default/keyboard
     echo "XKBLAYOUT=\"br\"" >> /etc/default/keyboard
-    echo "XKBVARIANT=\"\"" >> /etc/default/keyboard
-    echo "XKBOPTIONS=\"\"" >> /etc/default/keyboard
+    echo "XKBVARIANT=\"abnt2\"" >> /etc/default/keyboard
+    echo "XKBOPTIONS=\"terminate:ctrl_alt_bksp\"" >> /etc/default/keyboard
     echo "BACKSPACE=\"guess\"" >> /etc/default/keyboard
 
     echo -e "${YELLOW}Configure hostname and hosts${NC}"
-    echo $HOST1 > /etc/hostname
+    echo $HOSTNAME > /etc/hostname
     echo "127.0.0.1	localhost.localdomain	localhost" > /etc/hosts
     echo "::1		localhost.localdomain	localhost" >> /etc/hosts
-    echo "127.0.1.1	$HOST1.localdomain	$HOST1" >> /etc/hosts
+    echo "127.0.1.1	$HOSTNAME.localdomain	$HOSTNAME" >> /etc/hosts
 
     echo -e "${YELLOW}Add candies to pacman.conf${NC}"
     sed -i 's/.*#Color.*/Color/' /etc/pacman.conf
     sed -i 's/.*#CheckSpace.*/CheckSpace/' /etc/pacman.conf
     sed -i 's/.*#TotalDownload.*/TotalDownload/' /etc/pacman.conf
-    sed -i 's/.*#[multilib].*/[multilib]/' /etc/pacman.conf
-    sed -i 's/.*#Include = /etc/pacman.d/mirrorlist.*/Include = /etc/pacman.d/mirrorlist/' /etc/pacman.conf
+    sed -i 's/.*\#\[multilib\].*/\[multilib\]/' /etc/pacman.conf
+    sed -i '/\[multilib\]/!b;n;cInclude = /etc/pacman.d/mirrorlist' /etc/pacman.conf 
     
     echo -e "${YELLOW}mkinitcpio -p linux...${NC}\n"
     mkinitcpio -p linux
@@ -477,14 +496,13 @@ if [ $EDITED == "YES" ]; then
   }
 
 
-  installpkgs(){ # --installPkgs
+  installPkgs(){ # --installPkgs
       echo -e "${YELLOW}Install packages...${NC}"
       roottest
-      confMirrorBr
-      # awk '{printf "%s"" ",$0}' Arch-pkglist.txt > pkgline.txt
-      pacman -S --needed qt xfce4 xfce4-goodies texlive-most
-      pacman -S --needed curl jq lm_sensors bind-tools translate-shell
+      confMirror
       pacman -S --needed ${packagelist[@]}
+      systemctl enable NetworkManager.service
+      systemctl start NetworkManager.service
   }
 
 
@@ -504,12 +522,17 @@ if [ $EDITED == "YES" ]; then
 
   confUser(){ # --confUser
     echo -e "${YELLOW}Configure admin user...${NC}"
-    roottest
-    echo -e "${YELLOW}Create user $USER ${NC}"
-    useradd -m -G wheel,disk,users,lp,sys,network,power -s /bin/bash $USER
-    passwd $USER
-    echo -e "${YELLOW}Add $USER at /etc/sudoers ${NC}"
-    sed -i "80i$USER ALL=(ALL) ALL" /etc/sudoers
+    if [[ -z "${USER//}" ]]; then  # if empty
+      echo -e "${RED}Admin user will not be created ${NC}"
+    else
+      sudotest
+      roottest
+      echo -e "${YELLOW}Create user $USER ${NC}"
+      useradd -m -G wheel,disk,users,lp,sys,network,power -s /bin/bash $USER
+      passwd $USER
+      echo -e "${YELLOW}Add $USER at /etc/sudoers ${NC}"
+      sed -i "80i$USER ALL=(ALL) ALL" /etc/sudoers
+    fi
   }
 
 
@@ -541,7 +564,7 @@ if [ $EDITED == "YES" ]; then
   }
 
 
-  installconky(){ # --installConky
+  installConky(){ # --installConky
     echo -e "${YELLOW}Install Conky...${NC}"
     sudotest
     notroottest
@@ -553,69 +576,51 @@ if [ $EDITED == "YES" ]; then
     sudo make install
     cd ..;cd ..
     rm -rf conky
-    
-    exit 0
   }
 
-
-  restoreOpenBox(){ # --restoreOpenBox
-    echo -e "${YELLOW}Restore Openbox Autostart...${NC}"
-    # notroottest
-
-    # echo "(nohup ~/.fehbg &)" > ~/.config/openbox/autostart
-    # echo "# Painel Tint2." >> ~/.config/openbox/autostart
-    # echo "(nohup /usr/bin/tint2 &)" >> ~/.config/openbox/autostart
-    # echo "(nohup /usr/bin/numlockx &)" >> ~/.config/openbox/autostart
-    # echo "(nohup /usr/bin/volumeicon &)" >> ~/.config/openbox/autostart
-    # echo "(nohup /usr/bin/nm-applet &)" >> ~/.config/openbox/autostart
-    # echo "(nohup /usr/bin/pamac-tray &)" >> ~/.config/openbox/autostart
-    # echo "" >> ~/.config/openbox/autostart
-    # echo "# Monitor Conky." >> ~/.config/openbox/autostart
-    # echo "# pacman -S --needed curl jq lm_sensors bind-tools translate-shell" >> ~/.config/openbox/autostart
-    # echo "(nohup /usr/bin/conky -b -c ~/.conky/weather-conkyrc &) " >> ~/.config/openbox/autostart
-    # echo "(nohup /usr/bin/conky -b -c ~/.conky/my-conkyrc &) " >> ~/.config/openbox/autostart
-    # echo "(nohup /usr/bin/conky -b -c ~/.conky/cheat-conkyrc &) " >> ~/.config/openbox/autostart
-    # echo "#(nohup /usr/bin/conky -p 3 &) " >> ~/.config/openbox/autostart
-    # echo "" >> ~/.config/openbox/autostart
-    # echo "$BG -solid \"#303030\"" >> ~/.config/openbox/autostart
-    # echo "" >> ~/.config/openbox/autostart
-    # echo "export XCURSOR_THEME=\"Ecliz-Arch\"k" >> ~/.config/openbox/autostart
-    # echo "export QT_QPA_PLATFORMTHEME=\"qt5ct\"" >> ~/.config/openbox/autostart
-    # echo "export QT_AUTO_SCREEN_SCALE_FACTOR=0" >> ~/.config/openbox/autostart
-
-    # echo "#!/bin/sh" > ~/.fehbg
-    # echo "/usr/bin/feh --bg-scale '/path-to-image/image.jpg'" >> ~/.fehbg
-    
-    exit 0
-  }
 
 
   confSys(){ # --confSys
     echo -e "${YELLOW}Configure system...${NC}"
     roottest
-      
     loadkeys $KEYBOARD
+    systemctl enable ntpd
+    systemctl start ntpd
     systemctl enable dhcpcd
     systemctl start dhcpcd
-    confUser
-    confMirrorBr
-    installpkgs
     echo -e "${GREEN}Optionally:${NC}"
+    echo -e "${YELLOW}\t$0 --confUser${NC}"
+    echo -e "${YELLOW}\t$0 --confMirror${NC}"
+    echo -e "${YELLOW}\t$0 --installPkgs${NC}"
     echo -e "${YELLOW}\t$0 --installLDM${NC}"
     echo -e "${YELLOW}\t$0 --installYay${NC}"
     echo -e "${YELLOW}\t$0 --installYayPkgs${NC}"
     echo -e "${YELLOW}\t$0 --installNvidia${NC}"
     echo -e "${YELLOW}\t$0 --installConky${NC}"
+    echo -e "${YELLOW}\n\t$0 --restoreMyConf${NC}"
     
     exit 0
   }
 
 
-  ###### END SCRIPT FUNCTIONS ######
+
+
+  restoreMyConf(){ # --restoreMyConf
+    echo -e "${YELLOW}Restore my configs...${NC}"
+    notroottest
+    
+    echo -e "${YELLOWB}Edit this as your flavor ;)${NC}"
+    
+  }
 
 
 
-  ###### BEGIN MAIN SCIPT FUNCTION ######
+
+  ###### END PROGRAM FUNCTIONS ######
+
+
+
+  ###### BEGIN MAIN FUNCTION ######
 
   main(){
     case $KEY in
@@ -625,12 +630,12 @@ if [ $EDITED == "YES" ]; then
         shift # past argument
         shift # past value
       ;;
-      -ba|--backuparch)
+      -ba|--backupArch)
         backupArch
         shift # past argument
         shift # past value
       ;;
-      -bu|--backupaur)
+      -bu|--backupAur)
         backupAur
         shift # past argument
         shift # past value
@@ -641,12 +646,12 @@ if [ $EDITED == "YES" ]; then
         shift # past argument
         shift # past value
       ;;
-      -ra|--restorearch)
+      -ra|--restoreArch)
         restoreArch
         shift # past argument
         shift # past value
       ;;
-      -ru|--restoreaur)
+      -ru|--restoreAur)
         restoreAur
         shift # past argument
         shift # past value
@@ -677,7 +682,7 @@ if [ $EDITED == "YES" ]; then
         shift
       ;;
       --installPkgs)
-        installpkgs
+        installPkgs
         shift # past argument
         shift # past value
       ;;
@@ -692,17 +697,17 @@ if [ $EDITED == "YES" ]; then
         shift # past value
       ;;
       --installConky)
-        installconky
+        installConky
         shift # past argument
         shift # past value
       ;;
-      --restoreOpenBox)
-        restoreOpenBox
+      --restoreMyConf)
+        restoreMyConf
         shift # past argument
         shift # past value
       ;;
-      --confMirrorBr)
-        confMirrorBr
+      --confMirror)
+        confMirror
         shift # past argument
         shift # past value
       ;;
@@ -724,11 +729,12 @@ if [ $EDITED == "YES" ]; then
   exit 0
   }
 
-  ###### END MAIN SCRIPT FUNCTION ######
+  ###### END MAIN FUNCTION ######
 
 
   ### Execute Main
   main
+
 
 else
   echo -e "\t\t\t    ${REDB}!!! WARNING !!!${NC}"
