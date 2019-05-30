@@ -53,7 +53,8 @@ if [ $EDITED == "YES" ]; then
   KEY="$1"
 
   # Run < ./ArchRestore.sh --backupArch > on previous installed system and 
-  # paste here the list from file Arch-pkglist.txt
+  # paste here the list from file Arch-pkglist.txt.
+  # These packages install all you need to run OpenBox and Xfce4 with Lightdm
   packagelist=( 
   accountsservice acpi acpid alsa-firmware alsa-utils amd-ucode android-tools \ 
   android-udev audacious autoconf automake avahi b43-fwcutter bash bind-tools \ 
@@ -67,7 +68,7 @@ if [ $EDITED == "YES" ]; then
   garcon gawk gcc gcc-libs gcolor2 gettext ghostscript gimp git \ 
   glibc gnome-icon-theme gnome-keyring gnome-themes-extra go \ 
   gparted grep grub gsfonts gst-libav gst-plugins-bad \ 
-  gst-plugins-base gst-plugins-good gst-plugins-ugly gtk3 gufw \ 
+  gst-plugins-base gst-plugins-good gst-plugins-ugly gtk-engine-murrine gtk3 gufw \ 
   gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gzip \ 
   haskell-iwlib haveged hexchat hplip htop inetutils iproute2 \ 
   iptables iputils ipw2100-fw ipw2200-fw jdk8-openjdk jfsutils jq \ 
