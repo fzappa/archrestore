@@ -52,7 +52,8 @@ if [ $EDITED == "YES" ]; then
   AURPKG="Aur-pkglist.txt"
   KEY="$1"
 
-  # awk '{printf "%s"" ",$0}' Arch-pkglist.txt > pkgline.txt
+  # Run < ./ArchRestore.sh --backupArch > on previous installed system and 
+  # paste here the list from file Arch-pkglist.txt
   packagelist=( 
   accountsservice acpi acpid alsa-firmware alsa-utils amd-ucode android-tools \ 
   android-udev audacious autoconf automake avahi b43-fwcutter bash bind-tools \ 
@@ -632,49 +633,49 @@ if [ $EDITED == "YES" ]; then
       ;;
       -ba|--backupArch)
         backupArch
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       -bu|--backupAur)
         backupAur
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       -r|--restore)
         restoreArch
         restoreAur
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       -ra|--restoreArch)
         restoreArch
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       -ru|--restoreAur)
         restoreAur
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       --installYay)
         installYay
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       --installYayPkgs)
         installYayPkgs
-        shift # past argument
-        shift # past value
+        shift
+        shift 
       ;;
       --confLiveCD)
         confLiveCD
-        shift # past argument
-        shift # past value
+        shift 
+        shift
       ;;
       --installLiveCD)
         installLiveCD
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       --installChroot)
         installChroot
@@ -683,47 +684,47 @@ if [ $EDITED == "YES" ]; then
       ;;
       --installPkgs)
         installPkgs
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       --confUser)
         confUser
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       --installNvidia)
         installNvidia
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       --installConky)
         installConky
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       --restoreMyConf)
         restoreMyConf
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       --confMirror)
         confMirror
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       --confSys)
         confSys
-        shift # past argument
-        shift # past value
+        shift 
+        shift 
       ;;
       --installLDM)
         installLDM
         shift
         shift
       ;;
-      *)    # unknown option
+      *)  # unknown option
         helpFunction
-        shift # past argument
+        shift 
       ;;
     esac
   exit 0
