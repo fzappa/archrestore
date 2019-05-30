@@ -152,6 +152,7 @@ if [ $EDITED == "YES" ]; then
     echo -e "\t${YELLOW}      --installNvidia${NC}\t: ${RED}Install NVIDIA and CUDA${NC}"
     echo -e "\t${YELLOW}      --installConky${NC}\t: ${RED}Install Conky from git${NC}"
     echo -e "\t${YELLOW}      --installLDM${NC}\t: ${RED}Install Lightdm login${NC}"
+    echo -e "\t${YELLOW}      --installGdrive${NC}\t: ${RED}Install drive for Google Drive${NC}"
 
     echo -e "\n\t${YELLOW}      --restoreMyConf${NC}\t: ${RED}Restore my configs${NC} ${GREEN}=>${NC} ${WHITE}Config as your flavor. ;)${NC}"
 
@@ -581,6 +582,16 @@ if [ $EDITED == "YES" ]; then
   }
 
 
+  installGdrive(){ # --installGdrive
+    # https://github.com/odeke-em/drive
+    echo -e "${YELLOW}Install drive for Google Drive...${NC}"
+    notroottest
+    installYay  # just to check if has Go and Git installed...
+    echo -e "${YELLOW}Install gdrive from github.com/odeke-em/drive/...${NC}"
+    export GOPATH=/home/$USER/gopath
+    go get -u github.com/odeke-em/drive/cmd/drive
+  }
+
 
   confSys(){ # --confSys
     echo -e "${YELLOW}Configure system...${NC}"
@@ -712,6 +723,11 @@ if [ $EDITED == "YES" ]; then
         confMirror
         shift 
         shift 
+      ;;
+      --installGdrive)
+        installGdrive
+        shift
+        shift
       ;;
       --confSys)
         confSys
