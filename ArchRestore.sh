@@ -13,13 +13,12 @@ ROOT="" # /dev/sdX1
 MKFS="mkfs.ext4"
 
 ### Swap
-SWAP="" # /dev/sdX3
-NEWSWAP="NO"  # YES | NO
+SWAP=""      # /dev/sdX3
+NEWSWAP="NO" # YES | NO
 
 ### Locale
 KEYBOARD="br-abnt2"
-LANG1="pt_BR.UTF-8 UTF-8"
-LANG2="pt_BR.UTF-8"
+LANG=(pt_BR.UTF-8 UTF-8) # "en_US.UTF-8 UTF-8" is default
 XKB="localectl set-x11-keymap br abnt2"
 
 ### Network and packages
@@ -27,7 +26,9 @@ COUNTRY="country=BR"  # "country=BR&country=US"
 HOSTNAME="hostname"
 PACSTRAP="base"       # "base base-devel"
 
+# Change to "YES" after adapting the script
 EDITED="NO" # YES | NO
+
 
 #############################################################
 
@@ -44,7 +45,6 @@ WHITEB='\e[1;37:5m'
 NC='\e[0m' # No Color
 
 
-
 if [ $EDITED == "YES" ]; then
 
 
@@ -52,7 +52,7 @@ if [ $EDITED == "YES" ]; then
   AURPKG="Aur-pkglist.txt"
   KEY="$1"
 
-  # Run < ./ArchRestore.sh --backupArch > on previous installed system and 
+  # Run <./ArchRestore.sh --backupArch> on previous installed system and 
   # paste here the list from file Arch-pkglist.txt.
   # These packages install all you need to run OpenBox and Xfce4 with Lightdm
   packagelist=( 
@@ -68,8 +68,8 @@ if [ $EDITED == "YES" ]; then
   garcon gawk gcc gcc-libs gcolor2 gettext ghostscript gimp git \ 
   glibc gnome-icon-theme gnome-keyring gnome-themes-extra go \ 
   gparted grep grub gsfonts gst-libav gst-plugins-bad \ 
-  gst-plugins-base gst-plugins-good gst-plugins-ugly gtk-engine-murrine gtk3 gufw \ 
-  gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gzip \ 
+  gst-plugins-base gst-plugins-good gst-plugins-ugly gtk-engine-murrine gtk3 \ 
+  gufw gvfs gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gzip \ 
   haskell-iwlib haveged hexchat hplip htop inetutils iproute2 \ 
   iptables iputils ipw2100-fw ipw2200-fw jdk8-openjdk jfsutils jq \ 
   jre8-openjdk jre8-openjdk-headless less lib32-flex lib32-gtk3 \ 
@@ -104,7 +104,8 @@ if [ $EDITED == "YES" ]; then
   tlp translate-shell ttf-bitstream-vera ttf-droid ttf-inconsolata \ 
   ttf-indic-otf ttf-liberation ttf-ubuntu-font-family tumbler udiskie \ 
   udisks2 unace unrar usb_modeswitch usbutils util-linux vi viewnior \ 
-  vim virtualbox virtualbox-guest-modules-arch virtualbox-guest-iso virtualbox-guest-utils vlc vnstat \ 
+  vim virtualbox virtualbox-guest-modules-arch virtualbox-guest-iso \ 
+  virtualbox-guest-utils vlc vnstat \ 
   volumeicon wget which wmctrl wpa_supplicant \ 
   xcursor-simpleandsoft xcursor-vanilla-dmz-aa xdg-user-dirs \ 
   xdg-utils xf86-input-elographics xf86-input-evdev xf86-input-keyboard \ 
@@ -169,7 +170,8 @@ if [ $EDITED == "YES" ]; then
 
   testmbr(){
     if [[ -z "${MBR//}" ]]; then # if is empty
-      echo -e "${REDB}ERRO:${NC} ${RED}MBR disk not defined.${NC}"
+      echo -e "${RED}ERRO:${NC} ${YELLOW}MBR disk not defined.${NC}"
+      read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
       exit 1
     fi
   }
@@ -178,7 +180,8 @@ if [ $EDITED == "YES" ]; then
     if !(hash sudo 2>/dev/null); then
       echo -e "${RED}SUDO not installed.${NC}"
       if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-        echo -e "${REDB}ERRO:${NC} ${YELLOW}Please, login as root and install sudo${NC}"
+        echo -e "${RED}ERRO:${NC} ${YELLOW}Please, login as root and install sudo${NC}"
+        read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
         exit 1
       else
         echo -e "${YELLOW}Install sudo${NC}"
@@ -190,23 +193,26 @@ if [ $EDITED == "YES" ]; then
     fi
   }
 
-  notroottest(){
-    if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-      echo -e "${GREENB}Runing as user${NC}"
-    else
-      echo -e "${REDB}ERRO:${NC} ${YELLOW}This must be run as user${NC}"
-      exit 1
-    fi
-  }
-
   roottest(){
     if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-      echo -e "${REDB}ERRO:${NC} ${YELLOW}This must be run as root${NC}"
+      echo -e "${RED}ERRO:${NC} ${YELLOW}This must be run as root${NC}"
+      read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
       exit 1
     else
       echo -e "${REDB}Runing as root${NC}"
     fi
   }
+
+  notroottest(){
+    if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+      echo -e "${GREENB}Runing as user${NC}"
+    else
+      echo -e "${RED}ERRO:${NC} ${YELLOW}This must be run as user${NC}"
+      read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
+      exit 1
+    fi
+  }
+
 
   ###### END TEST FUNCTIONS ######
 
@@ -214,34 +220,35 @@ if [ $EDITED == "YES" ]; then
 
   ###### BEGIN PROGRAM FUNCTIONS ######
 
-  backupArch(){ # --backupArch
+  backupArch(){ #begin --backupArch
     echo -e "${YELLOW}Backup Arch packages to $ARCHPKG ${NC}"
     pacman -Qqen > $ARCHPKG
-  }
+  } #end --backupArch
 
 
-  backupAur(){ # --backupAur
+  backupAur(){ #begin --backupAur
     echo -e "${YELLOW}Backup Aur packages to $AURPKG ${NC}"
     pacman -Qqem > $AURPKG
-  }
+  } #end --backupAur
 
 
-  restoreArch(){ # --restoreArch
+  restoreArch(){ #begin --restoreArch
     if [ -f "$ARCHPKG" ]; then
       sudotest
       echo -e "${YELLOW}Restore Arch packages from $ARCHPKG$... ${NC}"
       sudo pacman -S --needed $(comm -12 <(pacman -Slq|sort) <(sort $ARCHPKG) )
       echo -e "${YELLOW}Reinstalled all Arch packages\n. ${NC}"
     else
-      echo -e "${REDB}ERRO:${NC} ${YELLOW}$ARCHPKG$ file not found ${NC}"
+      echo -e "${RED}ERRO:${NC} ${YELLOW}$ARCHPKG$ file not found ${NC}"
       echo -e "${YELLOW}Run $0 --backupArch before ${NC}"
+      read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
       exit 1
     fi
     exit 0
-  }
+  } #end --restoreArch
 
 
-  restoreAur(){ # --restoreAur
+  restoreAur(){ #begin --restoreAur
     if [ -f "$AURPKG" ]; then
       echo -e "${YELLOW}Restore AUR packages from $AURPKG...${NC}"
       notroottest
@@ -249,15 +256,16 @@ if [ $EDITED == "YES" ]; then
       yay -S --needed --noconfirm - < $AURPKG
       echo -e "${YELLOW}Reinstalled all Aur packages.\n${NC}"
     else
-      echo -e "${REDB}ERRO:${NC} ${YELLOW}$AURPKG$ file not found ${NC}"
+      echo -e "${RED}ERRO:${NC} ${YELLOW}$AURPKG$ file not found ${NC}"
       echo -e "${YELLOW}Run $0 --backupAur before ${NC}"
+      read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
       exit 1
     fi
     exit 0
-  }
+  } #end --restoreAur
 
 
-  installYay(){ # --installYay
+  installYay(){ #begin --installYay
     echo -e "${YELLOW}Install YAY... ${NC}"
     notroottest
     echo -e "${YELLOW}Checking Yay dependencies... ${NC}"
@@ -273,7 +281,7 @@ if [ $EDITED == "YES" ]; then
 
     if !(hash go 2>/dev/null); then
       echo -e "${RED}GO not installed. ${NC}"
-      echo -e "${YELLOW}Install go ${NC}"
+      echo -e "${YELLOW}Install Go ${NC}"
       echo -e "${YELLOW}Check if $USER is in /home dir...${NC}"
       if [ -d "/home/$USER" ]; then
 	      echo -e "${YELLOW}/home/$USER found!${NC}"
@@ -282,7 +290,8 @@ if [ $EDITED == "YES" ]; then
         chown $USER:$USER /home/$USER/gopath -R
         sudo pacman -S --needed go
       else
-	      echo -e "${REDB}404 ERROR!${NC} ${YELLOW}/home/$USER not found!${NC}"
+	      echo -e "${RED}404 ERROR!${NC} ${YELLOW}/home/$USER not found!${NC}"
+        read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
 	      exit 1
       fi
     else
@@ -293,7 +302,7 @@ if [ $EDITED == "YES" ]; then
       echo -e "${RED}Yay not installed.${NC}"
       echo -e "${YELLOW}Install Yay${NC}"
       if [ ! -d "/home/$USER/gopath/tmp" ]; then
-	echo -e "${YELLOW}/home/$USER/gopath/tmp not found!${NC}"
+        echo -e "${YELLOW}/home/$USER/gopath/tmp not found!${NC}"
         echo -e "${YELLOW}Creating /home/$USER/gopath/tmp${NC}"
         mkdir -p /home/$USER/gopath/tmp
         chown $USER:$USER /home/$USER/gopath -R
@@ -306,37 +315,33 @@ if [ $EDITED == "YES" ]; then
     else
       echo -e "${YELLOW}Yay already installed.${NC}"
     fi
-  }
+  } #end --installYay
 
 
-  confMirror(){ # --confMirror
+  confMirror(){ #begin --confMirror
     echo -e "${YELLOW}Configure Mirror...${NC}"
-    if [[ $(/usr/bin/id -u) -ne 0 ]]; then # if not root
-      echo -e "${REDB}ERRO:${NC}${RED}confMirror must be run as root!"
-      exit 1
-    else # if root
-      if !(hash rankmirrors 2>/dev/null ); then # if not installed
-        echo -e "rankmirrors not installed"
-        echo -e "Install pacman-contrib"
-        pacman -Sy
-        pacman -S --needed pacman-contrib
-        confMirror
-      else # if installed
-        echo -e "${YELLOW}Findind fastest mirrors...${NC}"
-        curl -s "https://www.archlinux.org/mirrorlist/?$COUNTRY&protocol=http&protocol=https&ip_version=4&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -v -n 8 - 2>&1 | tee /etc/pacman.d/mirrorlist
-      fi 
-    fi
-  }
+    roottest
+    if !(hash rankmirrors 2>/dev/null ); then # if not installed
+      echo -e "rankmirrors not installed"
+      echo -e "Install pacman-contrib"
+      pacman -Sy
+      pacman -S --needed pacman-contrib
+      confMirror
+    else # if installed
+      echo -e "${YELLOW}Findind fastest mirrors...${NC}"
+      curl -s "https://www.archlinux.org/mirrorlist/?$COUNTRY&protocol=http&protocol=https&ip_version=4&use_mirror_status=on" | sed -e 's/^#Server/Server/' -e '/^#/d' | rankmirrors -v -n 8 - 2>&1 | tee /etc/pacman.d/mirrorlist
+    fi 
+  } #end --confMirror
 
 
-  confLiveCD(){ # --confLiveCD
+  confLiveCD(){ #begin --confLiveCD
     echo -e "${YELLOW}Configure from LiveCD...${NC}"
     testmbr
     roottest
     loadkeys $KEYBOARD
-    echo $LANG1 > /etc/locale.gen
+    echo ${LANG[*]} > /etc/locale.gen
     locale-gen
-    export LANG=$LANG2
+    export LANG=${LANG[0]}
     timedatectl set-ntp true
   
     echo -e "${YELLOW}Add candies to pacman.conf${NC}"
@@ -362,6 +367,7 @@ if [ $EDITED == "YES" ]; then
       swapon $SWAP
     elif [[ -z "${SWAP//}" ]]; then  # if empty
       echo -e "${RED}SWAP will not be created ${NC}"
+      read -p "$(echo -e ${REDB}"Press any key to continue..."${NC})"
     fi
 
     if [[ -n "${ROOT//}" ]]; then # if not empty
@@ -371,23 +377,25 @@ if [ $EDITED == "YES" ]; then
       mount $ROOT /mnt
       echo -e "${YELLOW}Run: ${NC} ${RED}$0 --installLiveCD${NC}"
     else
-      echo -e "${REDB}System will not be installed${NC}"
-      echo -e "${RED}ROOT disk (/) not exists ${NC}"
+      echo -e "${RED}ERRO: System will not be installed${NC}"
+      echo -e "${YELLOW}ROOT disk (/) not exists ${NC}"
+      read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
       exit 1
     fi     
     exit 0
-  }
+  } #end --confLiveCD
 
 
-  installLiveCD(){ # --installLiveCD
+  installLiveCD(){ #begin --installLiveCD
     echo -e "${YELLOW}Install from LiveCD...${NC}"
     roottest
     if [ -f "/ArchRestore.sh" ]; then
       cp /ArchRestore.sh /mnt/
     else
-      echo -e "${REDB} ArchRestore.sh not found on / ${NC}"
+      echo -e "${RED} ArchRestore.sh not found on / ${NC}"
       echo -e "${YELLOW} Copy ArchRestore.sh to / and run${NC}"
       echo -e "${YELLOW} ArchRestore.sh --installLiveCD again.${NC}"
+      read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
       exit 1
     fi
 
@@ -395,7 +403,7 @@ if [ $EDITED == "YES" ]; then
       cp /ArchRestore-completion.sh /mnt/
     else
       echo -e "${RED} ArchRestore-completion.sh not found on / ${NC}"
-      echo -e "${YELLOW} Continue...${NC}"
+      read -p "$(echo -e ${REDB}"Press any key to continue..."${NC})"
     fi
 
     confMirror
@@ -403,13 +411,14 @@ if [ $EDITED == "YES" ]; then
     pacstrap /mnt $PACSTRAP
     genfstab -p /mnt > /mnt/etc/fstab
     
+    echo -e "${GREEN}The system is ready to arch-chroot${NC}"
     echo -e "${YELLOW}Run${NC} ${RED}arch-chroot /mnt${NC}"
     echo -e "${YELLOW}Run${NC} ${RED}./ArchRestore.sh --installChroot${NC}"
     exit 0
-  }
+  } #end --installLiveCD
 
 
-  installChroot(){ # --installChroot
+  installChroot(){ #begin --installChroot
     echo -e "${YELLOW}Install inside arch-chroot...${NC}"
     testmbr
     roottest
@@ -428,24 +437,24 @@ if [ $EDITED == "YES" ]; then
     systemctl enable ntpd
 
     echo -e "${YELLOW}Configure /etc/locale.gen${NC}"
+    echo ${LANG[*]} >> /etc/locale.gen
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-    echo $LANG1 >> /etc/locale.gen
     
     locale-gen
 
     echo -e "${YELLOW}Create /etc/locale.conf${NC}"
-    export LANG=$LANG2
+    export LANG=${LANG[0]}
     touch /etc/locale.conf
-    echo "LANG=$LANG2" > /etc/locale.conf
-    echo "LC_ADDRESS=$LANG2" >> /etc/locale.conf
-    echo "LC_IDENTIFICATION=$LANG2" >> /etc/locale.conf
-    echo "LC_MEASUREMENT=$LANG2" >> /etc/locale.conf
-    echo "LC_MONETARY=$LANG2" >> /etc/locale.conf
-    echo "LC_NAME=$LANG2" >> /etc/locale.conf
-    echo "LC_NUMERIC=$LANG2" >> /etc/locale.conf
-    echo "LC_PAPER=$LANG2" >> /etc/locale.conf
-    echo "LC_TELEPHONE=$LANG2" >> /etc/locale.conf
-    echo "LC_TIME=$LANG2" >> /etc/locale.conf
+    echo "LANG=${LANG[0]}" > /etc/locale.conf
+    echo "LC_ADDRESS=${LANG[0]}" >> /etc/locale.conf
+    echo "LC_IDENTIFICATION=${LANG[0]}" >> /etc/locale.conf
+    echo "LC_MEASUREMENT=${LANG[0]}" >> /etc/locale.conf
+    echo "LC_MONETARY=${LANG[0]}" >> /etc/locale.conf
+    echo "LC_NAME=${LANG[0]}" >> /etc/locale.conf
+    echo "LC_NUMERIC=${LANG[0]}" >> /etc/locale.conf
+    echo "LC_PAPER=${LANG[0]}" >> /etc/locale.conf
+    echo "LC_TELEPHONE=${LANG[0]}" >> /etc/locale.conf
+    echo "LC_TIME=${LANG[0]}" >> /etc/locale.conf
 
     cp /etc/locale.conf /etc/default/locale
     
@@ -496,20 +505,69 @@ if [ $EDITED == "YES" ]; then
   
     echo -e "\n${YELLOW}Now${NC} ${RED}reboot${NC}"
     exit 0
-  }
+  } #end --installChroot
 
 
-  installPkgs(){ # --installPkgs
+  installPkgs(){ #begin --installPkgs
       echo -e "${YELLOW}Install packages...${NC}"
       roottest
       confMirror
       pacman -S --needed ${packagelist[@]}
+
+      echo -e "${YELLOW}Disable dhcpcd...${NC}"
+      systemctl stop dhcpcd
+      systemctl disable dhcpcd
+
+      echo -e "${YELLOW}Enable Network Manager...${NC}"
       systemctl enable NetworkManager.service
       systemctl start NetworkManager.service
-  }
+      
+      echo -e "${YELLOW}Configure xkb layout...${NC}"
+      eval $XKB
+
+      echo -e "${YELLOW}Install polkit rules...${NC}"
+      tee /etc/polkit-1/rules.d/99-archrestore.rules << ENDRULES
+polkit.addRule(function(action, subject) {
+    if (action.id.indexOf("org.freedesktop.udisks2.") == 0 && subject.isInGroup("wheel")) {
+        return polkit.Result.YES;
+    }
+});
+
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.login1.power-off" ||
+        action.id == "org.freedesktop.login1.reboot" ||
+        action.id == "org.freedesktop.login1.hibernate" ||
+        action.id == "org.freedesktop.login1.suspend") {
+        return polkit.Result.YES;
+    }
+});
+
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.upower.hibernate" ||
+        action.id == "org.freedesktop.upower.suspend") {
+        return polkit.Result.YES;
+    }
+});
+
+/* Allow users of network group to use blueman feature requiring root without authentication */
+polkit.addRule(function(action, subject) {
+    if ((action.id == "org.blueman.network.setup" ||
+         action.id == "org.blueman.dhcp.client" ||
+         action.id == "org.blueman.rfkill.setstate" ||
+         action.id == "org.blueman.pppd.pppconnect") &&
+        subject.isInGroup("network")) {
+        return polkit.Result.YES;
+    }
+});
+ENDRULES
+
+    echo -e "${YELLOW}Packages installed.${NC}"
+    read -p "$(echo -e ${REDB}"Press any key to continue..."${NC})"
+
+  } #end --installPkgs
 
 
-  installYayPkgs(){ # --installYayPkgs
+  installYayPkgs(){ #begin --installYayPkgs
     echo -e "${YELLOW}Install Yay packages...${NC}"
     notroottest
     installYay
@@ -520,30 +578,32 @@ if [ $EDITED == "YES" ]; then
     yay -S openbox-themes
     yay -S skypeforlinux-stable-bin
     #yay -S quartus-free
-  }
+  } #end --installYayPkgs
 
 
-  confUser(){ # --confUser
+  confUser(){ #begin --confUser
     echo -e "${YELLOW}Configure admin user...${NC}"
     if [[ -z "${USER//}" ]]; then  # if empty
-      echo -e "${RED}Admin user will not be created ${NC}"
+      echo -e "${RED}ERROR: Admin user will not be created ${NC}"
+      echo -e "${YELLOW}USER not defined.${NC}"
+      read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
+      exit 1
     else
       sudotest
       roottest
       echo -e "${YELLOW}Create user $USER ${NC}"
-      useradd -m -G wheel,disk,users,lp,sys,network,power -s /bin/bash $USER
+      useradd -m -G wheel,lp,sys,network,power -s /bin/bash $USER
       passwd $USER
       echo -e "${YELLOW}Add $USER at /etc/sudoers ${NC}"
       sed -i "80i$USER ALL=(ALL) ALL" /etc/sudoers
     fi
-  }
+  } #end --confUser
 
 
-  installNvidia(){ # --installNvidia
+  installNvidia(){ #begin --installNvidia
     echo -e "${YELLOW}Install ${NC}${GREEN}NVIDIA${NC}"
     roottest
     pacman -S --needed nvidia nvidia-settings nvidia-utils
-    #pacman -S --needed cuda
     SWAPID=$(blkid -o value -s UUID $SWAP)
     echo -e "${YELLOW}Configure /etc/default/grub${NC}"
     sed -i "$A s/.*GRUB_CMDLINE_LINUX_DEFAULT=.*/GRUB_CMDLINE_LINUX_DEFAULT="\"resume=UUID="$(blkid -o value -s UUID $SWAP)"" rhgb ipv6.disable=1 nouveau.modeset=0 rd.driver.blacklist=nouveau\"/" /etc/default/grub
@@ -556,18 +616,18 @@ if [ $EDITED == "YES" ]; then
     echo -e "${YELLOW}\t$0 --installLDM${NC}"
 
     exit 0
-  }
+  } #begin --installNvidia
 
 
-  installLDM(){ # --installLDM
-    echo -e "${YELLOW}Install Lightdm...{NC}"
+  installLDM(){ #begin --installLDM
+    echo -e "${YELLOW}Install Lightdm...${NC}"
     roottest
     pacman -S --needed lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
     systemctl enable lightdm.service --force
-  }
+  } #end --installLDM
 
 
-  installConky(){ # --installConky
+  installConky(){ #begin --installConky
     echo -e "${YELLOW}Install Conky...${NC}"
     sudotest
     notroottest
@@ -579,21 +639,19 @@ if [ $EDITED == "YES" ]; then
     sudo make install
     cd ..;cd ..
     rm -rf conky
-  }
+  } #end --installConky
 
-
-  installGdrive(){ # --installGdrive
-    # https://github.com/odeke-em/drive
+  installGdrive(){ #begin --installGdrive
+    # https://github.com/odeke-em/drive#
     echo -e "${YELLOW}Install drive for Google Drive...${NC}"
     notroottest
-    installYay  # just to check if has Go and Git installed...
-    echo -e "${YELLOW}Install gdrive from github.com/odeke-em/drive/...${NC}"
+    installYay # just to check if has Go and Git installed...
+    echo -e "${YELLOW}Install github.com/odeke-em/drive/...${NC}"
     export GOPATH=/home/$USER/gopath
     go get -u github.com/odeke-em/drive/cmd/drive
-  }
+  } #end --installGdrive
 
-
-  confSys(){ # --confSys
+  confSys(){ #begin --confSys
     echo -e "${YELLOW}Configure system...${NC}"
     roottest
     loadkeys $KEYBOARD
@@ -613,7 +671,7 @@ if [ $EDITED == "YES" ]; then
     echo -e "${YELLOW}\n\t$0 --restoreMyConf${NC}"
     
     exit 0
-  }
+  } #end --confSys
 
 
 
@@ -625,7 +683,6 @@ if [ $EDITED == "YES" ]; then
     echo -e "${YELLOWB}Edit this as your flavor ;)${NC}"
     
   }
-
 
 
 
@@ -676,18 +733,18 @@ if [ $EDITED == "YES" ]; then
       ;;
       --installYayPkgs)
         installYayPkgs
-        shift
         shift 
+        shift
       ;;
       --confLiveCD)
         confLiveCD
         shift 
-        shift
+        shift 
       ;;
       --installLiveCD)
         installLiveCD
         shift 
-        shift 
+        shift
       ;;
       --installChroot)
         installChroot
@@ -739,7 +796,7 @@ if [ $EDITED == "YES" ]; then
         shift
         shift
       ;;
-      *)  # unknown option
+      *) # unknown option
         helpFunction
         shift 
       ;;
@@ -759,6 +816,4 @@ else
   echo -e "\t${RED}!!! You MUST read and adapt the script before continue !!!${NC}\n\n"
   exit 1
 fi
-
-
 
