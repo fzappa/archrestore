@@ -79,7 +79,7 @@ if [ $EDITED == "YES" ]; then
   libva-vdpau-driver licenses light-locker lightdm lightdm-gtk-greeter \ 
   lightdm-gtk-greeter-settings linux-firmware linux \ 
   virtualbox-host-modules-arch logrotate lsb-release \ 
-  lshw lvm2 lxappearance-obconf-gtk3 m4 make man-db man-pages \ 
+  lshw lvm2 lxappearance-obconf m4 make man-db man-pages \ 
   mc mdadm memtest86+ \ 
   menumaker mesa-demos mlocate \ 
   mobile-broadband-provider-info modemmanager mousepad mplayer \ 
