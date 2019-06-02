@@ -6,10 +6,10 @@ Script to restore my basic Arch Linux config.
 Steps to run:
 
 0. Read the script and adapt to your needs
-1. Copy the files ArchRestore.sh and ArchRestore-completion.sh to pen-drive
+1. Copy the files ArchRestore.sh, ArchRestore-completion.sh and folder functions to pen-drive
 2. Boot Arch Linux (Live CD)
-3. Mount pen-drive and copy those files to / 
-4. Run ./ArchRestore.sh to see the options
+3. Mount pen-drive and copy those files to /install
+4. Run ./ArchRestore.sh from /install folder to see the options
 
 Basic usage to install.
 
