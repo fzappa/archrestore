@@ -1,60 +1,320 @@
-  accountsservice acpi acpid alsa-firmware alsa-utils amd-ucode android-tools 
-  android-udev audacious autoconf automake avahi b43-fwcutter bash bind-tools 
-  binutils bison blueman boost btrfs-progs bzip2 cantarell-fonts catfish 
-  chromium cmake coreutils cpupower crda cronie cryptsetup cups cups-pdf 
-  cups-pk-helper device-mapper dhclient dhcpcd diffutils dmenu dmidecode 
-  dmraid dnsmasq dosfstools e2fsprogs ecryptfs-utils efibootmgr eigen 
-  engrampa evince exfat-utils exo f2fs-tools fakeroot feh ffmpeg 
-  ffmpegthumbnailer file file-roller filesystem findutils firefox flatpak 
-  flex freetype2 galculator-gtk2 garcon gawk gcc gcc-libs gcolor2 gettext 
-  ghostscript gimp git glibc gnome-icon-theme gnome-keyring gnome-themes-extra 
-  go gparted grep grub gsfonts gst-libav gst-plugins-bad gst-plugins-base 
-  gst-plugins-good gst-plugins-ugly gtk-engine-murrine gtk3 gufw gvfs 
-  gvfs-afc gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-smb gzip haskell-iwlib haveged 
-  hexchat hplip htop inetutils iproute2 iptables iputils ipw2100-fw ipw2200-fw 
-  jdk8-openjdk jfsutils jq jre8-openjdk jre8-openjdk-headless less lib32-flex 
-  lib32-gtk3 lib32-libva-intel-driver lib32-libva-mesa-driver 
-  lib32-libva-vdpau-driver lib32-mesa-demos lib32-nvidia-utils libdvdcss 
-  libgsf libgtop libopenraw libreoffice-still libtool libva-intel-driver 
-  libva-mesa-driver libva-vdpau-driver licenses light-locker lightdm 
-  lightdm-gtk-greeter lightdm-gtk-greeter-settings linux-firmware linux 
-  virtualbox-host-modules-arch logrotate lsb-release lshw lvm2 
-  lxappearance-obconf m4 make man-db man-pages mc mdadm memtest86+ menumaker 
-  mesa-demos mlocate mobile-broadband-provider-info modemmanager mousepad 
-  mplayer mtpfs nano network-manager-applet networkmanager 
-  networkmanager-openconnect networkmanager-openvpn networkmanager-pptp 
-  networkmanager-vpnc nfs-utils nss-mdns ntfs-3g ntp numlockx nvidia-utils 
-  obconf oblogout obmenu octave openbox openresolv openssh opera orage 
-  os-prober p7zip pacman patch patchutils pavucontrol pciutils pcmanfm-gtk3 
-  perl perl-file-mimeinfo pidgin pkgconf poppler-data poppler-glib powertop 
-  procps-ng psmisc pulseaudio-bluetooth pulseaudio pulseaudio-zeroconf 
-  pyqt5-common python-iwlib python-pillow python-pip python-pyqt5 
-  python-reportlab qtcreator reiserfsprogs rsync s-nail sakura samba 
-  screenfetch sed shadow simplescreenrecorder smartmontools speedcrunch splix 
-  subversion sudo sysfsutils system-config-printer systemd-sysvcompat tar 
-  telegram-desktop terminus-font texinfo texlive-bibtexextra texlive-core 
-  texlive-fontsextra texlive-formatsextra texlive-games texlive-humanities 
-  texlive-latexextra texlive-music texlive-pictures texlive-pstricks 
-  texlive-publishers texlive-science texstudio thunar-archive-plugin 
-  thunar thunar-media-tags-plugin thunar-volman thunderbird tint2 
-  tlp translate-shell ttf-bitstream-vera ttf-droid ttf-inconsolata 
-  ttf-indic-otf ttf-liberation ttf-ubuntu-font-family tumbler udiskie 
-  udisks2 unace unrar usb_modeswitch usbutils util-linux vi viewnior 
-  vim virtualbox virtualbox-guest-modules-arch virtualbox-guest-iso 
-  virtualbox-guest-utils vlc vnstat 
-  volumeicon wget which wmctrl wpa_supplicant 
-  xcursor-simpleandsoft xcursor-vanilla-dmz-aa xdg-user-dirs 
-  xdg-utils xf86-input-elographics xf86-input-evdev xf86-input-keyboard 
-  xf86-input-libinput xf86-input-mouse xf86-input-void xfburn 
-  xfce4-appfinder xfce4-battery-plugin xfce4-clipman-plugin 
-  xfce4-cpufreq-plugin xfce4-cpugraph-plugin xfce4-dict xfce4-diskperf-plugin 
-  xfce4-fsguard-plugin xfce4-genmon-plugin xfce4-mailwatch-plugin 
-  xfce4-mount-plugin xfce4-mpc-plugin xfce4-netload-plugin xfce4-notes-plugin 
-  xfce4-notifyd xfce4-panel xfce4-power-manager 
-  xfce4-pulseaudio-plugin xfce4-screenshooter xfce4-sensors-plugin 
-  xfce4-session xfce4-settings xfce4-smartbookmark-plugin 
-  xfce4-systemload-plugin xfce4-taskmanager xfce4-terminal 
-  xfce4-time-out-plugin xfce4-timer-plugin xfce4-verve-plugin 
-  xfce4-wavelan-plugin xfce4-weather-plugin xfce4-whiskermenu-plugin 
-  xfce4-xkb-plugin xfconf xfdesktop xfsprogs xfwm4 
-  xorg-server xorg-twm xorg-xinit xorg-xkill xterm yelp zsh 
+accountsservice
+acpi
+acpid
+alsa-firmware
+alsa-plugins
+alsa-utils
+amd-ucode
+android-tools
+android-udev
+arandr
+arp-scan
+audacious
+autoconf
+automake
+avahi
+b43-fwcutter
+bash
+bind-tools
+binutils
+bison
+blueman
+boost
+btrfs-progs
+bzip2
+cantarell-fonts
+catfish
+catimg
+chromium
+clonezilla
+cmake
+compton
+conky
+coreutils
+cpupower
+crda
+cronie
+cryptsetup
+cups
+cups-pdf
+cups-pk-helper
+dash
+deadbeef
+device-mapper
+dhclient
+dhcpcd
+diffutils
+dmenu
+dmidecode
+dmraid
+dnsmasq
+dosfstools
+dunst
+e2fsprogs
+ecryptfs-utils
+efibootmgr
+eigen
+engrampa
+evince
+exfat-utils
+f2fs-tools
+fakeroot
+feh
+ffmpeg
+ffmpegthumbnailer
+file
+file-roller
+filesystem
+findutils
+firefox
+flatpak
+flex
+freetype2
+galculator
+gawk
+gcc
+gcc-libs
+gcolor2
+gettext
+ghostscript
+gimp
+git
+glibc
+gnome-disk-utility
+gnome-icon-theme
+gnome-icon-theme-extras
+gnome-keyring
+gnome-themes-extra
+gparted
+gpicview
+grep
+groff
+grub
+gsfonts
+gsimplecal
+gst-libav
+gst-plugins-bad
+gst-plugins-base
+gst-plugins-good
+gst-plugins-ugly
+gtk3
+gufw
+gutenprint
+gvfs
+gvfs-afc
+gvfs-gphoto2
+gvfs-mtp
+gvfs-nfs
+gvfs-smb
+gzip
+haskell-iwlib
+haveged
+hddtemp
+hexchat
+hplip
+htop
+i3lock
+inetutils
+iproute2
+iputils
+ipw2100-fw
+ipw2200-fw
+jdk8-openjdk
+jfsutils
+jgmenu
+jp2a
+jq
+jre8-openjdk
+jre8-openjdk-headless
+less
+lib32-flex
+lib32-gtk3
+lib32-libva-intel-driver
+lib32-libva-mesa-driver
+lib32-libva-vdpau-driver
+lib32-mesa-demos
+libdvdcss
+libgsf
+libgtop
+libmpdclient
+libopenraw
+libtool
+libva-intel-driver
+libva-mesa-driver
+libva-vdpau-driver
+licenses
+linux
+linux-firmware
+logrotate
+lsb-release
+lshw
+lvm2
+lxappearance-obconf-gtk3
+lynx
+m4
+make
+man-db
+man-pages
+mc
+mdadm
+memtest86+
+menumaker
+mesa-demos
+mlocate
+mobile-broadband-provider-info
+modemmanager
+mousepad
+mplayer
+mtpfs
+nano
+neofetch
+net-tools
+netctl
+network-manager-applet
+networkmanager
+networkmanager-openconnect
+networkmanager-openvpn
+networkmanager-pptp
+networkmanager-vpnc
+nfs-utils
+nitrogen
+noto-fonts
+nss-mdns
+ntfs-3g
+ntp
+numlockx
+obconf
+oblogout
+obmenu
+open-vm-tools
+openbox
+openssh
+opera
+os-prober
+p7zip
+pacman
+pacman-contrib
+pamixer
+patch
+patchutils
+pavucontrol
+pciutils
+pcmanfm-gtk3
+perl
+perl-file-mimeinfo
+pidgin
+pkgconf
+playerctl
+poppler-data
+poppler-glib
+powertop
+procps-ng
+ps_mem
+psmisc
+pulseaudio
+pulseaudio-alsa
+pulseaudio-bluetooth
+pulseaudio-zeroconf
+python-iwlib
+python-pillow
+python-pip
+python-reportlab
+python2-xdg
+ranger
+reiserfsprogs
+rofi
+rsync
+s-nail
+sakura
+samba
+screenfetch
+scrot
+sed
+shadow
+smartmontools
+splix
+subversion
+sudo
+synapse
+sysfsutils
+system-config-printer
+systemd
+systemd-sysvcompat
+tar
+terminus-font
+termite
+termite-terminfo
+testdisk
+texinfo
+thunderbird
+tint2
+tlp
+traceroute
+translate-shell
+tree
+ttf-bitstream-vera
+ttf-dejavu
+ttf-droid
+ttf-font-awesome
+ttf-inconsolata
+ttf-indic-otf
+ttf-liberation
+ttf-roboto
+ttf-ubuntu-font-family
+udiskie
+udisks2
+unace
+unarchiver
+unarj
+unrar
+usb_modeswitch
+usbutils
+util-linux
+vi
+viewnior
+vim
+vnstat
+volumeicon
+w3m
+wget
+which
+whois
+wmctrl
+wpa_supplicant
+xcape
+xcb-util-cursor
+xcursor-simpleandsoft
+xcursor-vanilla-dmz-aa
+xdg-user-dirs
+xdg-user-dirs-gtk
+xdg-utils
+xdotool
+xed
+xf86-input-elographics
+xf86-input-evdev
+xf86-input-keyboard
+xf86-input-libinput
+xf86-input-mouse
+xf86-input-vmmouse
+xf86-input-void
+xf86-video-vmware
+xfce4-appfinder
+xfce4-screenshooter
+xfce4-taskmanager
+xfsprogs
+xorg-fonts-100dpi
+xorg-fonts-75dpi
+xorg-fonts-type1
+xorg-server
+xorg-server-xephyr
+xorg-twm
+xorg-xbacklight
+xorg-xinit
+xorg-xinput
+xorg-xkill
+xorg-xwininfo
+xterm
+yajl
+yelp
+zenity
+zsh
