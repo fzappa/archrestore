@@ -1,20 +1,14 @@
 #!/usr/bin/env bash
-#sudo dd if=iso of=/dev/sdX bs=1M status=progress oflag=direct conv=sync
-#https://www.archlinux.org/groups/x86_64/
-#https://linuxhint.com/install_xfce_manjaro_linux/
-#https://forum.manjaro.org/t/bootsplash-provided-by-the-kernel/34467/170
-#https://misc.flogisoft.com/bash/tip_colors_and_formatting
-#source ArchRestoreAutoComp.sh
 
-USER="alan"
+USER=""
 
 ### Install
-MBR="/dev/sda"   # /dev/sdX
-ROOT="/dev/sda4" # /dev/sdX1
+MBR=""   # /dev/sdX
+ROOT=""  # /dev/sdX1
 MKFS="mkfs.ext4"
 
 ### Swap
-SWAP="/dev/sdd3" # /dev/sdX3
+SWAP="" # /dev/sdX3
 NEWSWAP="NO"     # YES | NO
 
 ### Locale
@@ -24,11 +18,11 @@ XKB="localectl set-x11-keymap br abnt2"
 
 ### Network and packages
 COUNTRY="country=BR"       # "country=BR&country=US"
-HOSTNAME="urania"
+HOSTNAME="archrestore"
 PACSTRAP="base base-devel" # "base base-devel"
 
 # Change to "YES" after adapting the script
-EDITED="YES" # YES | NO
+EDITED="NO" # YES | NO
 
 
 #############################################################
@@ -48,14 +42,7 @@ NC='\e[0m' # No Color
 
 if [ $EDITED == "YES" ]; then
 
-
   KEY="$1"
-
-  ## awk '{printf "%s"" ",$0}' Arch-pkglist.txt > pkgline.txt
-  # Run <./ArchRestore.sh --backupArch> on previous installed system and 
-  # paste here the list from file Arch-pkglist.txt.
-
-
 
   ###### BEGIN MAIN FUNCTION ######
 
@@ -132,8 +119,8 @@ if [ $EDITED == "YES" ]; then
       ;;
       --install)
         install
-	      shift
-	      shift
+	shift
+	shift
       ;;
       --installPkgs)
         installPkgs
