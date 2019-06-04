@@ -1,9 +1,9 @@
 restoreMyConf(){ #begin --restoreMyConf
-  echo -e "${YELLOW}Restore my configs...${NC}"
+  echo -e "${YELLOW}Restore my configs (restoreMyConf.sh)...${NC}"
   notroottest
-  if [ -d "functions/mybackup" ]; then
+  if [ -d "src/mybackup" ]; then
     
-    for f in functions/mybackup/restoreMy*; do 
+    for f in src/mybackup/restoreMy*; do 
       source $f; 
     done
 

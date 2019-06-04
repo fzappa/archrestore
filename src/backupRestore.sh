@@ -1,3 +1,8 @@
+
+ARCHPKG="Arch-pkglist.txt"
+AURPKG="Aur-pkglist.txt"
+
+
 backupArch(){ #begin --backupArch
 	echo -e "${YELLOW}Backup Arch packages to $ARCHPKG ${NC}"
 	pacman -Qqen > $ARCHPKG

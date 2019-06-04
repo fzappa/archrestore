@@ -11,5 +11,6 @@ installYayPkgs(){ #begin --installYayPkgs
     yay -S --needed --noconfirm polybar
     yay -S --needed --noconfirm skypeforlinux-stable-bin
     yay -S --needed --noconfirm ttf-ms-fonts
+    yay -S --needed --noconfirm ttf-font-logos
     #yay -S quartus-free
   } #end --installYayPkgs

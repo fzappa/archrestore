@@ -8,7 +8,7 @@ Steps to run:
 0. Read the script and adapt to your needs
 1. Copy the files ArchRestore.sh, completion.sh and folder functions to pen-drive
 2. Boot Arch Linux (Live CD)
-3. Mount pen-drive and copy those files to /install
+3. Mount pen-drive and copy those files to /install (e.g)
 4. Run ./ArchRestore.sh from /install folder to see the options
 
 Basic usage to install.
