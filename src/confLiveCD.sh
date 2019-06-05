@@ -46,4 +46,4 @@ confLiveCD(){ #begin --confLiveCD
         read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
         exit 1
     fi     
-  } #end --confLiveCD
+} #end --confLiveCD

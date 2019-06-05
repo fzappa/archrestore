@@ -1,5 +1,5 @@
 helpFunction(){
-	echo -e "\t#################################################################"
+    echo -e "\t#################################################################"
     echo -e "\t#\t\t\t${YELLOWB}Arch Linux Restore Script${NC}\t\t#"
     echo -e "\t# ${WHITE}$0${NC}\t\t\t\t\t\t#"
     echo -e "\t# ${BLUE}is a shell script to configure Arch Linux ${NC}\t\t\t#"

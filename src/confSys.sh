@@ -18,4 +18,4 @@ confSys(){ #begin --confSys
     echo -e "${YELLOW}\n\t$0 --restoreMyConf${NC}"
     
     exit 0
-  } #end --confSys
+} #end --confSys
