@@ -6,4 +6,4 @@ installGdrive(){ #begin --installGdrive
     echo -e "${YELLOW}Install github.com/odeke-em/drive/...${NC}"
     export GOPATH=/home/$USER/gopath
     go get -u github.com/odeke-em/drive/cmd/drive
-  } #end --installGdrive
+} #end --installGdrive

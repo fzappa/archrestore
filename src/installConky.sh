@@ -10,4 +10,4 @@ installConky(){ #begin --installConky
     sudo make install
     cd ..;cd ..
     rm -rf conky
-  } #end --installConky
+} #end --installConky

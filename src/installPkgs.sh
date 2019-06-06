@@ -23,7 +23,7 @@ installPkgs(){ #begin --installPkgs
         eval $XKB
 
         echo -e "${YELLOW}Install polkit rules...${NC}"
-        tee /etc/polkit-1/rules.d/99-archrestore.rules << ENDRULES
+        tee /etc/polkit-1/rules.d/99-archrestore.rules <<"ENDRULES"
 polkit.addRule(function(action, subject) {
     if (action.id.indexOf("org.freedesktop.udisks2.") == 0 && subject.isInGroup("wheel")) {
         return polkit.Result.YES;

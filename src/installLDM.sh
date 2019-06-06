@@ -3,4 +3,4 @@ installLDM(){ #begin --installLDM
     roottest
     pacman -S --needed lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings
     systemctl enable lightdm.service --force
-  } #end --installLDM
+} #end --installLDM
