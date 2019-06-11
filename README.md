@@ -2,7 +2,7 @@ Arch Linux Restore Script (Shell Script)
 ============================================
 
 ## Script to restore my basic Arch Linux config.
-#### Following the K.I.S.S. principle (Keep It Simple Stupid) ;)
+#### Following the K.I.S.S. principle (Keep It Simple, Stupid) ;)
 --------------------------------------------------------------------------
 Steps to run:
 
