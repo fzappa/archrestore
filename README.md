@@ -1,4 +1,4 @@
-# Arch Linux Restore Script (Shell Script)
+Arch Linux Restore Script (Shell Script)
 ============================================
 
 ## Script to restore my basic Arch Linux config.
