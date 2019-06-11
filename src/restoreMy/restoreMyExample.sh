@@ -1,7 +1,7 @@
 restoreMyExample(){
     echo -e "${YELLOW}Restore my VirtualBox.${NC}"
-    pacman -S --needed --noconfirm virtualbox virtualbox-guest-modules-arch
-    pacman -S --needed --noconfirm virtualbox-guest-utils virtualbox-host-modules-arch
+    pacman -S --needed --noconfirm virtualbox 
+    pacman -S --needed --noconfirm virtualbox-host-modules-arch
     
     if [ $(getent group vboxusers) ]; then
         sudo gpasswd -a $USER vboxusers
