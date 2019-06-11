@@ -25,7 +25,7 @@ helpFunction(){
     echo -e "\t${YELLOW}      --installYayPkgs${NC}\t: ${RED}Install Yay packages${NC}\n"
     echo -e "\t${YELLOW}      --confUser${NC}\t: ${RED}Create default user account${NC}\n"
 
-    echo -e "\t${YELLOW}      --installNvidia${NC}\t: ${RED}Install NVIDIA and CUDA${NC}"
+    echo -e "\t${YELLOW}      --installNvidia${NC}\t: ${RED}Install NVIDIA${NC}"
     echo -e "\t${YELLOW}      --installConky${NC}\t: ${RED}Install Conky from git${NC}"
     echo -e "\t${YELLOW}      --installLDM${NC}\t: ${RED}Install Lightdm login${NC}"
     echo -e "\t${YELLOW}      --installGdrive${NC}\t: ${RED}Install drive for Google Drive${NC}"
