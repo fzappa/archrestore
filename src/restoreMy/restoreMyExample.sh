@@ -1,5 +1,5 @@
 restoreMyExample(){
-	echo -e "${YELLOW}Restore my VirtualBox.${NC}"
+    echo -e "${YELLOW}Restore my VirtualBox.${NC}"
     pacman -S --needed --noconfirm virtualbox virtualbox-guest-modules-arch
     pacman -S --needed --noconfirm virtualbox-guest-utils virtualbox-host-modules-arch
     
@@ -17,6 +17,5 @@ restoreMyExample(){
         sudo gpasswd -a $USER vboxsf
     fi
 
-    
     read -p "$(echo -e ${REDB}"Press any key to continue..."${NC})"
 }

@@ -29,3 +29,5 @@ Basic usage to install.
 >
 
 ![](prog.gif)
+
+![](basicflowchart.png)
