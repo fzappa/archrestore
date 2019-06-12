@@ -4,6 +4,9 @@ Arch Linux Restore Script (Shell Script)
 ## Script to restore my basic Arch Linux config.
 #### Following the K.I.S.S. principle (Keep It Simple, Stupid) ;)
 --------------------------------------------------------------------------
+Simple way to install Arch Linux.
+Ideal for having Arch Linux installed/reinstalled and configured in a few minutes.
+
 Steps to run:
 
 0. Read the script and adapt to your needs
