@@ -7,7 +7,7 @@ _ArchRestore(){
     opts+="--backup --backupArch --backupAur "
     opts+="--restore --restoreArch --restoreAur --install "
     opts+="--installYay --installYayPkgs --confLiveCD --installLiveCD --installChroot "
-    opts+="--installPkgs --confUser --installNvidia --installConky "
+    opts+="--installPkgs --confUser --installNvidia --installConky --installXfce "
     opts+="--restoreMyConf --confMirror --installGdrive --confSys --installLDM "
 
 	if [[ ${cur} == -* ]] ; then
