@@ -37,6 +37,6 @@ helpFunction(){
     echo -e "\t\t\t${REDB}!!!   WARNING   !!!${NC}"
     echo -e "\t\t${YELLOW}You ${NC}${RED}MUST${NC}${YELLOW} read and edit the script${NC}"
     echo -e "\t\t${YELLOW}for your own convenience${NC}\n\n"
-    
+
     exit 0
 }
