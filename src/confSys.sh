@@ -16,6 +16,4 @@ confSys(){ #begin --confSys
     echo -e "${YELLOW}\t$0 --installNvidia${NC}"
     echo -e "${YELLOW}\t$0 --installConky${NC}"
     echo -e "${YELLOW}\n\t$0 --restoreMyConf${NC}"
-    
-    exit 0
 } #end --confSys

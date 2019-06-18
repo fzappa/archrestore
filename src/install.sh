@@ -1,6 +1,8 @@
 install(){ #begin --install
 
     rootpasswd(){
+        local PASS1
+        local PASS2
         echo -ne "\n${YELLOW}Define password for root: ${NC}"
         read -s PASS1
         echo -ne "\n${YELLOW}Retype password for root: ${NC}"
@@ -17,10 +19,9 @@ install(){ #begin --install
     confLiveCD
     installLiveCD
     arch-chroot /mnt /bin/bash <<"END" 
-cd /install;
+cd /ArchRestore;
 ./ArchRestore.sh --installChroot 
 END
   
     rootpasswd    
-    exit 0
 } #end --install
