@@ -27,7 +27,6 @@ restoreArch(){ #begin --restoreArch
 		read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
 		exit 1
 	fi
-	exit 0
 } #end --restoreArch
 
 
@@ -44,5 +43,4 @@ restoreAur(){ #begin --restoreAur
 		read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
 		exit 1
 	fi
-	exit 0
 } #end --restoreAur

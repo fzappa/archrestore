@@ -12,6 +12,4 @@ installNvidia(){ #begin --installNvidia
     
     echo -e "${GREEN}Optionally:${NC}"
     echo -e "${YELLOW}\t$0 --installLDM${NC}"
-
-    exit 0
 } #begin --installNvidia

@@ -6,10 +6,15 @@ confUser(){ #begin --confUser
         read -p "$(echo -e ${REDB}"Press any key to exit..."${NC})"
         exit 1
     else
-        sudotest
         roottest
         echo -e "${YELLOW}Create user $USER ${NC}"
-        useradd -m -G wheel,lp,sys,network,power -s /bin/bash $USER
+        if [ -d "/home/$USER" ]; then
+            useradd -d /home/$USER -G wheel,lp,sys,network,power -s /bin/bash $USER
+            chown -R $USER.$USER /home/$USER
+        else
+            useradd -m -G wheel,lp,sys,network,power -s /bin/bash $USER
+        fi
+        
         passwd $USER
         echo -e "${YELLOW}Add $USER at /etc/sudoers ${NC}"
         sed -i "80i$USER ALL=(ALL) ALL" /etc/sudoers
