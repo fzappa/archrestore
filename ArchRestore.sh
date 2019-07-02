@@ -138,6 +138,11 @@ if [ $EDITED == "YES" ]; then
             shift 
             shift 
         ;;
+        --installPolybar)
+            installPolybar
+            shift 
+            shift 
+        ;;
         --installGdrive)
             installGdrive
             shift
