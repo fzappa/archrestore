@@ -5,7 +5,7 @@ _ArchRestore(){
     prev="${COMP_WORDS[COMP_CWORD-1]}"
     opts="-b -ba -bu -r -ra -ru "
     opts+="--backup --backupArch --backupAur "
-    opts+="--restore --restoreArch --restoreAur --install "
+    opts+="--restore --restoreArch --restoreAur --install --confNetwork "
     opts+="--installYay --installYayPkgs --confLiveCD --installLiveCD --installChroot "
     opts+="--installPkgs --confUser --installNvidia --installConky --installXfce "
     opts+="--restoreMyConf --confMirror --installGdrive --confSys --installLDM "

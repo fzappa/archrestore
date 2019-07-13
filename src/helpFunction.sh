@@ -16,6 +16,7 @@ helpFunction(){
 
     echo -e "\t${YELLOW}      --install${NC}\t\t: ${RED}Run confLiveCD, installLiveCD and installChroot${NC}"
 
+    echo -e "\t${YELLOW}      --confNetwork${NC}\t: ${RED}Configure network. Use if not DHCP${NC}"
     echo -e "\t${YELLOW}      --confLiveCD${NC}\t: ${RED}Configure Arch from livecd${NC}"
     echo -e "\t${YELLOW}      --installLiveCD${NC}\t: ${RED}Install Arch from livecd${NC}"
     echo -e "\t${YELLOW}      --installChroot${NC}\t: ${RED}Install inside arch-chroot${NC}"

@@ -4,8 +4,13 @@ confSys(){ #begin --confSys
     loadkeys $KEYBOARD
     systemctl enable ntpd
     systemctl start ntpd
-    systemctl enable dhcpcd
-    systemctl start dhcpcd
+
+    if [ $DHCP == "NO" ]; then 
+        confNetwork
+    else
+        systemctl enable dhcpcd
+        systemctl start dhcpcd
+    fi
     echo -e "${GREEN}Optionally:${NC}"
     echo -e "${YELLOW}\t$0 --confUser${NC}"
     echo -e "${YELLOW}\t$0 --confMirror${NC}"

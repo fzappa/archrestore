@@ -16,6 +16,7 @@ install(){ #begin --install
         fi
     }
 
+    confNetwork
     confLiveCD
     installLiveCD
     arch-chroot /mnt /bin/bash <<"END" 

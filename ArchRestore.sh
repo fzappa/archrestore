@@ -9,7 +9,7 @@
 # First version date: 05/26/2019
 # Last version date:  06/19/2019
 
-USER=""
+USER="user"
 
 ### Install (/)
 MBR=""  # /dev/sdX
@@ -26,6 +26,14 @@ LANG=(pt_BR.UTF-8 UTF-8) # "en_US.UTF-8 UTF-8" is default
 XKB="localectl set-x11-keymap br abnt2"
 
 ### Network and packages
+DHCP="YES"
+
+# Define if static IPv4
+IFACE="enp0s0"
+IP="10.0.0.10/24" # IP/Mask
+GW="10.0.0.1"  #
+DNS="8.8.8.8"  #
+
 COUNTRY="country=BR"  # "country=BR&country=US"...
 HOSTNAME="hostname"
 PACSTRAP="base"       # "base base-devel"
@@ -103,6 +111,11 @@ if [ $EDITED == "YES" ]; then
             shift 
         ;;
     ###END backupRestore.sh
+        --confNetwork)
+            confNetwork
+            shift 
+            shift 
+        ;;
         --confLiveCD)
             confLiveCD
             shift 
