@@ -4,7 +4,7 @@ helpFunction(){
     echo -e "\t# ${WHITE}$0${NC}\t\t\t\t\t\t#"
     echo -e "\t# ${BLUE}This is a shell script to install and configure Arch Linux ${NC}\t#"
     echo -e "\t# ${RED}Author: Alan Franco\t-\tgithub.com/fzappa/archrestore ${NC}\t#"
-    echo -e "\t# ${YELLOW}Version: 1.1.0${NC} \t\t${YELLOW}Date: 22/05/2020${NC}\t\t#"
+    echo -e "\t# ${YELLOW}Version: 1.2.17${NC} \t\t${YELLOW}Date: 22/05/2020${NC}\t\t#"
     echo -e "\t#################################################################\n"
     echo -e "\tUsage: ${WHITE}$0${NC} ${YELLOW}<option>${NC}\n"
     echo -e "\t${YELLOW}-b ${NC} | ${YELLOW}--backup${NC}\t\t: ${RED}Generate backup list of Arch and Aur packages${NC}"

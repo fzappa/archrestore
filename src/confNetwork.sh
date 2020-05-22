@@ -8,6 +8,8 @@ confNetwork() { #begin --confNetwork
         FILE="/etc/netctl/$IFACE"
 
         echo -e "\t${YELLOW}Configure DHCP with netctl.${NC}"
+        systemctl stop dhcpcd
+        ip address flush dev $IFACE
 
         echo "Description='A basic dhcp ethernet connection'" >$FILE
         echo "Interface=$IFACE" >>$FILE
@@ -38,6 +40,7 @@ confNetwork() { #begin --confNetwork
         FILE="/etc/systemd/network/$IFACE.network"
         systemctl stop systemd-networkd.service
         ip address flush dev $IFACE
+
         echo -e "\t${YELLOW}Configure static IP with networkd.${NC}"
         echo "[Match]" >$FILE
         echo "Name=$IFACE" >>$FILE
