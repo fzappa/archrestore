@@ -26,21 +26,20 @@ LANG=(pt_BR.UTF-8 UTF-8) # "en_US.UTF-8 UTF-8" is default
 XKB="localectl set-x11-keymap br abnt2"
 
 ### Network and packages
-DHCP="YES"  # YES | NO
+DHCP="YES" # YES | NO
 
 # Define if static IPv4
 IFACE="ens33"
 IP="10.0.0.10/24" # IP/Mask
-GW="10.0.0.1"  #
-DNS="8.8.8.8"  #
+GW="10.0.0.1"     #
+DNS="8.8.8.8"     #
 
-COUNTRY="country=BR"  # "country=BR&country=US"...
+COUNTRY="country=BR" # "country=BR&country=US"...
 HOSTNAME="hostname"
-PACSTRAP="base"       # "base base-devel"
+PACSTRAP="base linux linux-firmware" # "base linux linux-firmware base-devel"
 
 # Change to "YES" after adapting the script
 EDITED="NO" # YES | NO
-
 
 #############################################################
 
@@ -56,170 +55,168 @@ WHITE='\e[1;37m'
 WHITEB='\e[1;37:5m'
 NC='\e[0m' # No Color
 
-
 if [ $EDITED == "YES" ]; then
 
-  KEY="$1"
+    KEY="$1"
 
-  ###### BEGIN MAIN FUNCTION ######
+    ###### BEGIN MAIN FUNCTION ######
 
-  main(){
+    main() {
 
-    # Load all functions
-    if [ -d "src" ]; then
-      for f in src/*.sh; do 
-        source $f; 
-      done
-    else
-      echo -e "${REDB}ERRO: src/ folder not found!${NC}"
-      echo -e "${RED}Unable to continue install.${NC}"
-      exit 1
-    fi
+        # Load all functions
+        if [ -d "src" ]; then
+            for f in src/*.sh; do
+                source $f
+            done
+        else
+            echo -e "${REDB}ERRO: src/ folder not found!${NC}"
+            echo -e "${RED}Unable to continue install.${NC}"
+            exit 1
+        fi
 
-    case $KEY in
-    ###BEGIN backupRestore.sh
-        -b|--backup)
+        case $KEY in
+        ###BEGIN backupRestore.sh
+        -b | --backup)
             backupArch
             backupAur
             shift # past argument
             shift # past value
-        ;;
-        -ba|--backupArch)
+            ;;
+        -ba | --backupArch)
             backupArch
-            shift 
-            shift 
-        ;;
-        -bu|--backupAur)
+            shift
+            shift
+            ;;
+        -bu | --backupAur)
             backupAur
-            shift 
-            shift 
-        ;;
-        -r|--restore)
+            shift
+            shift
+            ;;
+        -r | --restore)
             restoreArch
             restoreAur
-            shift 
-            shift 
-        ;;
-        -ra|--restoreArch)
+            shift
+            shift
+            ;;
+        -ra | --restoreArch)
             restoreArch
-            shift 
-            shift 
-        ;;
-        -ru|--restoreAur)
+            shift
+            shift
+            ;;
+        -ru | --restoreAur)
             restoreAur
-            shift 
-            shift 
-        ;;
-    ###END backupRestore.sh
+            shift
+            shift
+            ;;
+            ###END backupRestore.sh
         --confNetwork)
             confNetwork
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         --confLiveCD)
             confLiveCD
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         --confMirror)
             confMirror
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         --confSys)
             confSys
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         --confUser)
             confUser
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         --install)
             install
             shift
             shift
-        ;;
+            ;;
         --installChroot)
             installChroot
             shift
             shift
-        ;;
+            ;;
         --installConky)
             installConky
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         --installPolybar)
             installPolybar
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         --installGdrive)
             installGdrive
             shift
             shift
-        ;;
+            ;;
         --installLDM)
             installLDM
             shift
             shift
-        ;;
+            ;;
         --installLiveCD)
             installLiveCD
-            shift 
             shift
-        ;;
+            shift
+            ;;
         --installNvidia)
             installNvidia
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         --installPkgs)
             installPkgs
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         --installYay)
             installYay
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         --installYayPkgs)
             installYayPkgs
-            shift 
             shift
-        ;;
+            shift
+            ;;
         --restoreMyConf)
             restoreMyConf
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         --installXfce)
             installXfce
-            shift 
-            shift 
-        ;;
+            shift
+            shift
+            ;;
         *) # unknown option
             helpFunction
-            shift 
-        ;;
-    esac
-  exit 0
-  }
+            shift
+            ;;
+        esac
+        exit 0
+    }
 
-  ###### END MAIN FUNCTION ######
+    ###### END MAIN FUNCTION ######
 
-
-  ### Execute Main
-  main
-
+    ### Execute Main
+    main
 
 else
-  source src/helpFunction.sh
-  helpFunction
-  echo -e "\t\t\t    ${REDB}!!! WARNING !!!${NC}"
-  echo -e "\t${RED}!!! You MUST read and adapt the script before continue !!!${NC}\n\n"
-  exit 1
+
+    source src/helpFunction.sh
+    helpFunction
+    echo -e "\t\t\t    ${REDB}!!! WARNING !!!${NC}"
+    echo -e "\t${RED}!!! You MUST read and adapt the script before continue !!!${NC}\n\n"
+    exit 1
 fi
