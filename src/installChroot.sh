@@ -61,8 +61,8 @@ installChroot(){ #begin --installChroot
     sed -i 's/.*\#\[multilib\].*/\[multilib\]/' /etc/pacman.conf
     sed -i '/\[multilib\]/!b;n;cInclude = /etc/pacman.d/mirrorlist' /etc/pacman.conf 
 
-    echo -e "${YELLOW}mkinitcpio -p linux...${NC}\n"
-    mkinitcpio -p linux
+    echo -e "${YELLOW}mkinitcpio -P...${NC}\n"
+    mkinitcpio -P
 
     echo -e "${YELLOW}Define ROOT password:${NC}\n"
     passwd
