@@ -7,7 +7,15 @@ confNetwork() { #begin --confNetwork
         echo -e "${YELLOW}Using DHCP.${NC}"
         FILE="/etc/netctl/$IFACE"
 
-        echo -e "\t${YELLOW}Configure DHCP with netctl.${NC}"
+        echo -e "\t${RED}Disable netctl...${NC}"
+        systemctl stop netctl.service
+        systemctl disable netctl
+
+        echo -e "\t${YELLOW}Stop and disable systemd-networkd service...${NC}"
+        systemctl stop systemd-networkd.service
+        systemctl disable systemd-networkd.service
+
+        echo -e "\t${RED}Stop dhcpcd service...${NC}"
         systemctl stop dhcpcd
         ip address flush dev $IFACE
 
@@ -29,7 +37,7 @@ confNetwork() { #begin --confNetwork
 
     elif [ $DHCP == "NO" ]; then
 
-        echo -e "\t${RED}Disable and remove netctl...${NC}"
+        echo -e "\t${RED}Disable netctl...${NC}"
         systemctl stop netctl.service
         systemctl disable netctl
 
