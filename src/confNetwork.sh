@@ -14,7 +14,7 @@ confNetwork(){ #begin --confNetwork
         systemctl disable dhcpcd
 
         FILE="/etc/systemd/network/$IFACE.network"
-        echo -e "\t${YELLOW}Configure static IP with Netctl.${NC}"
+        echo -e "\t${YELLOW}Configure static IP with networkd.${NC}"
         echo "[Match]" > $FILE
         echo "Name=$IFACE" >> $FILE
         echo "" >> $FILE

@@ -217,6 +217,8 @@ if [ $EDITED == "YES" ]; then
 
 
 else
+  source src/helpFunction.sh
+  helpFunction
   echo -e "\t\t\t    ${REDB}!!! WARNING !!!${NC}"
   echo -e "\t${RED}!!! You MUST read and adapt the script before continue !!!${NC}\n\n"
   exit 1
