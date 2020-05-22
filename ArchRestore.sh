@@ -26,10 +26,10 @@ LANG=(pt_BR.UTF-8 UTF-8) # "en_US.UTF-8 UTF-8" is default
 XKB="localectl set-x11-keymap br abnt2"
 
 ### Network and packages
-DHCP="YES"
+DHCP="YES"  # YES | NO
 
 # Define if static IPv4
-IFACE="enp0s0"
+IFACE="ens33"
 IP="10.0.0.10/24" # IP/Mask
 GW="10.0.0.1"  #
 DNS="8.8.8.8"  #
