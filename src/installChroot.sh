@@ -83,6 +83,9 @@ installChroot(){ #begin --installChroot
     echo -e "\n${YELLOW}grub-mkconfig -o /boot/grub/grub.cfg${YELLOW}"
     grub-mkconfig -o /boot/grub/grub.cfg
   
+    echo -e "${YELLOW}Install aditional packages${NC}"
+    pacman -S --needed --noconfirm vim netctl
+
     echo -e "\n${YELLOW}Now${NC}, ${RED}reboot.${NC}"
 
 } #end --installChroot
