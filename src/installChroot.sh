@@ -84,7 +84,7 @@ installChroot(){ #begin --installChroot
     grub-mkconfig -o /boot/grub/grub.cfg
   
     echo -e "${YELLOW}Install aditional packages${NC}"
-    pacman -S --needed --noconfirm vim netctl
+    pacman -S --needed --noconfirm vim netctl dhcpcd
 
     echo -e "\n${YELLOW}Now${NC}, ${RED}reboot.${NC}"
 

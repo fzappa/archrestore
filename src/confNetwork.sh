@@ -30,7 +30,6 @@ confNetwork() { #begin --confNetwork
         echo -e "\t${RED}Disable and remove netctl...${NC}"
         systemctl stop netctl.service
         systemctl disable netctl
-        pacman -Rns netctl
 
         echo -e "\t${RED}Stop and disable dhcp service...${NC}"
         systemctl stop dhcpcd
