@@ -7,7 +7,6 @@ confNetwork(){ #begin --confNetwork
         echo -e "\t${RED}Disable and remove netctl...${NC}"
         systemctl stop netctl.service
         systemctl disable netctl
-        ip address flush dev $IFACE
         pacman -Rns netctl
 
         echo -e "\t${RED}Stop and disable dhcp service...${NC}"
@@ -15,6 +14,8 @@ confNetwork(){ #begin --confNetwork
         systemctl disable dhcpcd
 
         FILE="/etc/systemd/network/$IFACE.network"
+        systemctl stop systemd-networkd.service
+        ip address flush dev $IFACE
         echo -e "\t${YELLOW}Configure static IP with networkd.${NC}"
         echo "[Match]" > $FILE
         echo "Name=$IFACE" >> $FILE
@@ -26,8 +27,8 @@ confNetwork(){ #begin --confNetwork
         echo "DNS=8.8.8.8" >> $FILE
 
         echo -e "\t${YELLOW}Enable and start systemd-networkd service...${NC}"
-        systemctl enable systemd-networkd
-        systemctl start systemd-networkd
+        systemctl enable systemd-networkd.service
+        systemctl start systemd-networkd.service
 
     else
         echo -e "${YELLOW}Using DHCP.${NC}"
