@@ -10,6 +10,7 @@
 # last update date:  05/22/2020
 
 USER="user"
+HOSTNAME="hostname"
 
 ### Install (/)
 MBR=""  # /dev/sdX
@@ -20,11 +21,6 @@ MKFS="mkfs.ext4"
 SWAP=""      # /dev/sdX3
 NEWSWAP="NO" # YES | NO
 
-### Locale
-KEYBOARD="br-abnt2"
-LANG=(pt_BR.UTF-8 UTF-8) # "en_US.UTF-8 UTF-8" is default
-XKB="localectl set-x11-keymap br abnt2"
-
 ### Network and packages
 DHCP="YES" # YES | NO
 
@@ -34,8 +30,16 @@ IP="10.0.0.10/24" # IP/Mask
 GW="10.0.0.1"     #
 DNS="8.8.8.8"     #
 
+# To get the list from: https://www.archlinux.org/mirrorlist/
 COUNTRY="country=BR" # "country=BR&country=US"...
-HOSTNAME="hostname"
+
+
+
+### Locale
+KEYBOARD="br-abnt2"
+LANG=(pt_BR.UTF-8 UTF-8) # "en_US.UTF-8 UTF-8" is default
+XKB="localectl set-x11-keymap br abnt2"
+
 PACSTRAP="base linux linux-firmware" # "base linux linux-firmware base-devel"
 
 # Change to "YES" after adapting the script
