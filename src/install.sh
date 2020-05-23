@@ -21,7 +21,7 @@ install(){ #begin --install
     installLiveCD
     arch-chroot /mnt /bin/bash <<"END" 
 cd /ArchRestore;
-./ArchRestore.sh --installChroot 
+bash ArchRestore.sh --installChroot 
 END
   
     rootpasswd    
