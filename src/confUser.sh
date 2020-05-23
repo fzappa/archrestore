@@ -16,6 +16,7 @@ confUser(){ #begin --confUser
         fi
         
         passwd $USER
+        pacman -S --needed --noconfirm sudo
         echo -e "${YELLOW}Add $USER at /etc/sudoers ${NC}"
         sed -i "80i$USER ALL=(ALL) ALL" /etc/sudoers
     fi
