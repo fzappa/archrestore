@@ -38,7 +38,7 @@ confNetwork() { #begin --confNetwork
         sleep 5
 
         #check if network is up
-        if ping -q -c 1 -W 1 google.com >/dev/null; then
+        if (ping -q -c 1 -W 1 www.google.com >/dev/null); then
             echo -e "\t${YELLOW}The network connection is ok...${NC}"
         else
             echo -e "\t${YELLOW}ERROR: Fail network connection...${NC}"
@@ -77,7 +77,7 @@ confNetwork() { #begin --confNetwork
         sleep 5
         
         #check if network is up
-        if ping -q -c 1 -W 1 google.com >/dev/null; then
+        if (ping -q -c 1 -W 1 www.google.com >/dev/null); then
             echo -e "\t${YELLOW}The network connection is ok...${NC}"
         else
             echo -e "\t${YELLOW}ERROR: Fail network connection...${NC}"
