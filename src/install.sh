@@ -17,7 +17,6 @@ install(){ #begin --install
     }
 
     confNetwork
-    sleep 10 
     confLiveCD
     installLiveCD
     arch-chroot /mnt /bin/bash <<"END" 

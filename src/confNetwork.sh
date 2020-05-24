@@ -35,6 +35,17 @@ confNetwork() { #begin --confNetwork
         systemctl enable dhcpcd
         systemctl start dhcpcd
 
+        sleep 5
+
+        #check if network is up
+        if ping -q -c 1 -W 1 google.com >/dev/null; then
+            echo -e "\t${YELLOW}The network connection is ok...${NC}"
+        else
+            echo -e "\t${YELLOW}ERROR: Fail network connection...${NC}"
+            echo -e "\t${YELLOW}Check you connection.${NC}"
+            exit 1
+        fi
+
     elif [ $DHCP == "NO" ]; then
 
         echo -e "\t${RED}Disable netctl...${NC}"
@@ -62,6 +73,17 @@ confNetwork() { #begin --confNetwork
         echo -e "\t${YELLOW}Enable and start systemd-networkd service...${NC}"
         systemctl enable systemd-networkd.service
         systemctl start systemd-networkd.service
+
+        sleep 5
+        
+        #check if network is up
+        if ping -q -c 1 -W 1 google.com >/dev/null; then
+            echo -e "\t${YELLOW}The network connection is ok...${NC}"
+        else
+            echo -e "\t${YELLOW}ERROR: Fail network connection...${NC}"
+            echo -e "\t${YELLOW}Check you connection.${NC}"
+            exit 1
+        fi
 
     fi
 
