@@ -35,7 +35,7 @@ confNetwork() { #begin --confNetwork
         systemctl enable dhcpcd
         systemctl start dhcpcd
 
-        sleep 5
+        sleep 10
 
         #check if network is up
         if (ping -q -c 1 -W 1 www.google.com >/dev/null); then
@@ -74,7 +74,7 @@ confNetwork() { #begin --confNetwork
         systemctl enable systemd-networkd.service
         systemctl start systemd-networkd.service
 
-        sleep 5
+        sleep 10
         
         #check if network is up
         if (ping -q -c 1 -W 1 www.google.com >/dev/null); then
