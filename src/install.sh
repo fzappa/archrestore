@@ -1,6 +1,6 @@
-install(){ #begin --install
+install() { #begin --install
 
-    rootpasswd(){
+    rootpasswd() {
         local PASS1
         local PASS2
         echo -ne "\n${YELLOW}Define password for root: ${NC}"
@@ -19,10 +19,11 @@ install(){ #begin --install
     confNetwork
     confLiveCD
     installLiveCD
-    arch-chroot /mnt /bin/bash <<"END" 
+    arch-chroot /mnt /bin/bash <<"END"
 cd /ArchRestore;
 bash ArchRestore.sh --installChroot 
 END
-  
-    rootpasswd    
+
+    rootpasswd
+    umount -R /mnt
 } #end --install
