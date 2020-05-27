@@ -8,9 +8,17 @@ installYayPkgs(){ #begin --installYayPkgs
     yay -S --needed --noconfirm obkey
     yay -S --needed --noconfirm obmenu-generator
     yay -S --needed --noconfirm openbox-themes
+    yay -S --needed --noconfirm picom
     yay -S --needed --noconfirm polybar
-    yay -S --needed --noconfirm skypeforlinux-stable-bin
     yay -S --needed --noconfirm ttf-ms-fonts
     yay -S --needed --noconfirm ttf-font-logos
-    #yay -S quartus-free
+    #yay -S --needed --noconfirm masterpdfeditor-free
+    #yay -S --needed --noconfirm microsoft-r-open
+    #yay -S --needed --noconfirm skypeforlinux-stable-bin
+    #yay -S --needed --noconfirm zoom
+    #yay -S --needed --noconfirm geogebra
+    #yay -S --needed --noconfirm fritzing
+    #yay -S --needed --noconfirm quartus-free
+    #yay -S --needed --noconfirm eagle
+
 } #end --installYayPkgs
