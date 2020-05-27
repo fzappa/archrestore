@@ -44,6 +44,7 @@ installYay(){ #begin --installYay
         cd ~/
         git clone https://aur.archlinux.org/yay.git
         cd yay
+        pacman -S --needed --noconfirm base-devel
         makepkg -si
         cd ..
         rm -rf yay
