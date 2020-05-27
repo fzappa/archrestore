@@ -8,6 +8,7 @@ installYayPkgs(){ #begin --installYayPkgs
     yay -S --needed --noconfirm obkey
     yay -S --needed --noconfirm obmenu-generator
     yay -S --needed --noconfirm openbox-themes
+    yay -S --needed --noconfirm conky-lua-nv
     yay -S --needed --noconfirm picom
     yay -S --needed --noconfirm polybar
     yay -S --needed --noconfirm ttf-ms-fonts
