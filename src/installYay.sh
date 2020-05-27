@@ -41,6 +41,7 @@ installYay(){ #begin --installYay
             chown $USER:$USER /home/$USER/gopath -R
         fi
         
+        cd ~/
         git clone https://aur.archlinux.org/yay.git
         cd yay
         makepkg -si
